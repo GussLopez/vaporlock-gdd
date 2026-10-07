@@ -35,6 +35,7 @@ Ejemplos:
 
 ¿Por qué alguien querría jugar este videojuego? 
 
+Porque es un videojuego 2D con temática steampunk futurista basado en Pixel Art que combina elementos de acción y plataformas, además de una historia relativamente única para su género y escenarios que completan una estética visual al usuario.
 ## Características principales
 
 Lista las características que definen la experiencia.
@@ -49,6 +50,7 @@ Lista las características que definen la experiencia.
 
 ¿Qué hace que este videojuego sea reconocible frente a otros del mismo género?
 
+Su principal diferenciador es la combinación de una ambientación steampunk futurista con Pixel Art, junto con una historia y diseño de escenarios propios. Esta combinación busca darle una identidad visual y narrativa diferente frente a otros videojuegos 2D del género.
 ## Límites del concepto
 
 ¿Qué cosas **NO** es este videojuego?
