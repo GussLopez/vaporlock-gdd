@@ -16,7 +16,7 @@ Esta ficha identifica el proyecto de forma rápida. Debe permitir que alguien qu
 | **Responsable del proyecto** | Miguel Cordova                                                                     |
 | **Fecha de inicio**          | 2026/09/20                                                                         |
 | **Última actualización**     | 07/10/26                                                                           |
-| **Repositorio**              | https://github.com/GussLopez/vaporlock-gdd.git                                     |
+| **Repositorio**              | https://github.com/GussLopez/vaporlock.git                                         |
 
 ## Identidad del videojuego
 
