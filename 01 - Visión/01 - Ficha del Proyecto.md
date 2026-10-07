@@ -6,17 +6,17 @@ Esta ficha identifica el proyecto de forma rápida. Debe permitir que alguien qu
 
 ## Información general
 
-| Campo                        | Información                                                 |
-| ---------------------------- | ----------------------------------------------------------- |
-| **Nombre del proyecto**      | <!-- Nombre oficial o nombre temporal -->                   |
-| **Nombre clave**             | <!-- Identificador interno si existe -->                    |
-| **Versión del GDD**          | 0.1.0                                                       |
-| **Estado del proyecto**      | Concepto / Preproducción / Producción / Pruebas / Publicado |
-| **Equipo**                   | <!-- Integrantes -->                                        |
-| **Responsable del proyecto** | <!-- Persona responsable -->                                |
-| **Fecha de inicio**          | <!-- AAAA-MM-DD -->                                         |
-| **Última actualización**     | <!-- AAAA-MM-DD -->                                         |
-| **Repositorio**              | <!-- Enlace -->                                             |
+| Campo                        | Información                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| **Nombre del proyecto**      | Vaporlock                                                                          |
+| **Nombre clave**             | <!-- Identificador interno si existe -->                                           |
+| **Versión del GDD**          | 0.1.0                                                                              |
+| **Estado del proyecto**      | Concepto / Preproducción / Producción / Pruebas / Publicado                        |
+| **Equipo**                   | Gustavo López<br>Alexander Rosales<br>Omar Apango<br>Juan Canché<br>Miguel Cordova |
+| **Responsable del proyecto** | Miguel Cordova                                                                     |
+| **Fecha de inicio**          | 2026/09/20                                                                         |
+| **Última actualización**     | 07/10/26                                                                           |
+| **Repositorio**              | https://github.com/GussLopez/vaporlock-gdd.git                                     |
 
 ## Identidad del videojuego
 
@@ -49,7 +49,7 @@ Esta ficha identifica el proyecto de forma rápida. Debe permitir que alguien qu
 > Describe el videojuego en **una o dos frases**. Debe explicar quién juega, qué hace y qué lo hace interesante.
 
 **Respuesta:**
-
+Vaporlock es un videojuego 2D de acción y aventura con estética Steampunk, donde el jugador completa niveles en un mundo industrial dominado por cíborgs, enemigos y peligros mientras combate, supera obstáculos y descubre la historia detrás del conflicto. Su combinación de exploración, combate y ambientación mecánica busca ofrecer una experiencia dinámica y visualmente distintiva.
 ## Estado actual
 
 - [ ] Concepto definido
@@ -64,6 +64,6 @@ Esta ficha identifica el proyecto de forma rápida. Debe permitir que alguien qu
 ## Criterio de éxito del proyecto
 
 ¿Qué tendría que suceder para considerar que el videojuego cumplió su propósito?
-
+Que el proyecto se logré desarrollar una versión funcional y jugable de Vaporlock que cumpla las mecánicas principales planteadas, que mantenga una identidad visual relacionada con la temática **Steampunk** y permita al jugador completar la experiencia de principio a fin. Además, el videojuego deberá niveles funcionales, enemigos y obstáculos correctamente implementados, así como una progresión que motive al jugador a continuar avanzando. 
 
 > **Navegación:** [[00 - Índice]] · ← [[00 - Índice]] · [[02 - Visión del Juego]] →
