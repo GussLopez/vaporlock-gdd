@@ -16,7 +16,7 @@ Define las condiciones técnicas necesarias para ejecutar y desarrollar el video
 
 **Almacenamiento:** 2 GB disponibles (Sujeto a modificaciones)
 
-**Resolución:** 1280 × 720
+**Resolución:** 1920 × 1080
 
 **Conexión:** No requerida para jugar.
 
