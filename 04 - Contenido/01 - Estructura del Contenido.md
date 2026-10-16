@@ -19,15 +19,15 @@ Juego
 
 ## Cantidad estimada
 
-| Tipo | Cantidad |
-|---|---:|
-| Mundos | |
-| Niveles | |
-| Misiones | |
-| Enemigos | |
-| Jefes | |
-| NPC | |
-| Objetos | |
+| Tipo     | Cantidad |
+| -------- | -------: |
+| Mundos   |        1 |
+| Niveles  |        3 |
+| Misiones |        3 |
+| Enemigos |        4 |
+| Jefes    |        1 |
+| NPC      |        1 |
+| Objetos  |          |
 
 ## Dependencias
 

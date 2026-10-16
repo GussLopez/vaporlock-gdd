@@ -24,7 +24,7 @@ Define objetos que el jugador puede recoger, utilizar, equipar, vender, intercam
 
 **Rareza:**
 
-**Restricciones:**
+**Restricciones:** 
 
 **Interacciones:**
 
