@@ -21,7 +21,6 @@ The Last Night / Eastward (atmósfera pixelada detallada con fuerte contraste vo
 
 **Formas predominantes:**
 - Corporación / Lucius Corr: Estructuras verticales masivas, ángulos rectos, tuberías gruesas, formas pesadas y simétricas que transmiten rigidez, monolito y control militarizado.
-    
 - Jack / Tecnócratas: Formas funcionales, curvas mecánicas, pistones expuestos, elementos adaptables y asimétricos que transmiten pragmatismo, velocidad e inventiva humana.
 
 **Iluminación:** Alto contraste (Chiaroscuro industrial). Niebla de vapor dinámica que difumina los fondos, iluminación puntual que proviene de hornos de carbón (tonos cálidos) e indicadores/válvulas de energía digital (tonos fríos).
