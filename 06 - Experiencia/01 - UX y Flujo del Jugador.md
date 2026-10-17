@@ -48,9 +48,9 @@ La dificultad es hacer que el usuario entienda y se conecte con  la historia con
 
 - Qué ocurrió?  El juego proporcionará retroalimentación visual y sonora después de cada acción importante. Los enemigos desaparecerán o reproducirán una animación al ser derrotados, los objetos destructibles mostrarán efectos de destrucción y los objetivos completados se actualizarán mediante mensajes en pantalla.
 
-- Por qué ganó o perdió? El jugador conocerá el resultado mediante indicadores visuales y mensajes en pantalla.
-	- Victoria: Al cumplir los objetivos y alcanzar la salida, aparecerá un mensaje de nivel completado y se desbloqueará el siguiente escenario.
-	- Derrota: Cuando la vida de Jack llegue a cero, se reproducirá una animación de derrota y aparecerá una pantalla de Game Over, con la opción de reiniciar el nivel.
+- **Por qué ganó o perdió?** El jugador conocerá el resultado mediante indicadores visuales y mensajes en pantalla.
+- **Victoria:** Al cumplir los objetivos y alcanzar la salida, aparecerá un mensaje de nivel completado y se desbloqueará el siguiente escenario.
+- **Derrota:** Cuando la vida de Jack llegue a cero, se reproducirá una animación de derrota y aparecerá una pantalla de Game Over, con la opción de reiniciar el nivel.
 
 
 > **Navegación:** [[00 - Índice]] · ← [[05 - Audio y Música]] · [[02 - UI y Menús]] →
