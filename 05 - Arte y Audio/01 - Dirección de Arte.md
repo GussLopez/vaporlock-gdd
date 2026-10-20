@@ -17,7 +17,7 @@ The Last Night / Eastward (atmósfera pixelada detallada con fuerte contraste vo
 
 **Sensación buscada:** **Opresión industrial vs. Innovación esperanzadora.** El entorno debe sentirse pesado, sucio y dominado por la corporación de Lucius Corr. En contraste, los elementos de Jack y los Tecnócratas deben transmitir agilidad, creatividad y progreso científico.
 
-**Nivel de realismo:** **Semi-realista / Estilizado** (Con Aseprite) Proporciones ligeramente estilizadas para favorecer la lectura rápida de animaciones en plataformas 2D, pero con alto nivel de detalle en texturas de maquinaria, desgaste y engranajes.
+**Nivel de realismo:** **nivel básico de realismo / Estilizado** (Con Aseprite) Proporciones ligeramente estilizadas para favorecer la lectura rápida de animaciones en plataformas 2D, pero con alto nivel de detalle en texturas de maquinaria, desgaste y engranajes.
 
 **Formas predominantes:**
 - Corporación / Lucius Corr: Estructuras verticales masivas, ángulos rectos, tuberías gruesas, formas pesadas y simétricas que transmiten rigidez, monolito y control militarizado.
