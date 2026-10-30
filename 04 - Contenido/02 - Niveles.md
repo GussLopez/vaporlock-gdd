@@ -76,6 +76,38 @@ Inicio → Entrada a la fábrica → Tanques de Vapor → Depósitos de carbón 
 ```
 
 
+Nivel 3: El Obelisco
+Objetivo principal: Penetrar en la sede principal de Vaporis Industries y derrotar a Lucius Corr para detener su control sobre Metronia.
+
+Objetivos secundarios: Superar las trampas del recinto, derrotar a los enemigos que impidan avanzar y alcanzar la sala del enfrentamiento final.
+
+Duración estimada: 2 a 3 minutos como propuesta inicial, pendiente de comprobar mediante pruebas de juego, especialmente por la duración del jefe final.
+
+Dificultad: Alta.
+
+Mecánicas introducidas: Combate contra jefe, reconocimiento de ventanas de vulnerabilidad y respuesta a refuerzos enemigos.
+
+Mecánicas utilizadas: Movimiento, salto, evasión, combate y uso del armamento disponible.
+
+Estructura del escenario: Un corredor principalmente horizontal con trampas y enemigos conduce a una sala final. Al entrar, comienza directamente el combate contra Lucius Corr.
+
+Enemigos / obstáculos: Vigilantes de Vaporis Industries, trampas del corredor y robots invocados por Lucius durante el combate.
+
+Recompensas: Derrota de Lucius Corr y conclusión de la historia principal.
+
+Puntos de guardado: Ninguno en el planteamiento actual. Al perder toda la vida, Jack reinicia desde el comienzo del nivel.
+
+Condición de entrada: Haber destruido los objetivos industriales y salido de la fábrica durante el Nivel 2.
+
+Condición de salida: Reducir a cero los 2 puntos de vida de Lucius Corr, una vez superadas las fases de protección de sus robots.
+
+Eventos narrativos: El enfrentamiento comienza sin diálogo. Después de la derrota y muerte de Lucius, Jack abandona el lugar; la pantalla se oscurece y aparecen los créditos finales.
+
+Mapa / diagrama: Corredor con peligros, acceso a la sala de jefe, área de combate y salida final. El diagrama gráfico queda pendiente de adjuntar.
+Flujo del nivel
+Entrada al Obelisco → Pasillo con trampas y enemigos → Sala de Lucius
+→ Invocación de robots → Ventana vulnerable → Derrota de Lucius
+→ Salida de Jack → Fundido a negro → Créditos
 
 ## Criterios de calidad
 
