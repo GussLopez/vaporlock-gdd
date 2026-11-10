@@ -1,403 +1,127 @@
-02 - Mecanicas
-
 # Mecánicas
 
 ## Descripción de la sección
 
-Las mecánicas de *Vaporlock* comprenden las acciones, movimientos e interacciones que el jugador puede realizar durante su aventura. Estas permiten controlar a Jack Veil, desplazarse por los escenarios, enfrentar enemigos, superar obstáculos y utilizar los recursos disponibles para avanzar a través de los diferentes niveles.
-
-El videojuego combina mecánicas de plataformas en 2D con un sistema de combate cuerpo a cuerpo y a distancia, incorporando habilidades de movilidad, ataques especiales, interacción con objetos y mejoras del personaje.
-
-Cada mecánica está diseñada para ofrecer una experiencia dinámica, accesible y progresiva, permitiendo que el jugador desarrolle sus habilidades conforme enfrenta desafíos de mayor dificultad.
+Las mecánicas de **Vaporlock** definen las acciones y reglas que permiten a Jack Veil explorar, desplazarse, combatir e interactuar con el entorno. Cada una establece condiciones de activación, resultados y relaciones con el resto de la experiencia jugable.
 
 ## Plantilla de mecánica
 
-Las mecánicas se documentan considerando su propósito, forma de activación, reglas de funcionamiento, recursos utilizados y relación con otros elementos del videojuego.
-
-Para facilitar su comprensión, se dividen en *mecánicas principales, que representan las acciones fundamentales del jugador, y **mecánicas secundarias*, que complementan la experiencia y proporcionan nuevas posibilidades de interacción.
+Para cada mecánica se define: **propósito, activación, reglas, entrada, estado inicial, estado final, recursos utilizados, recompensa, penalización, interacciones con otras mecánicas y casos límite**.
 
 ## Mecánicas principales
 
-### Mecánica 01: Movimiento y plataformas
+### Mecánica 01 — Desplazamiento y plataformas
 
-*Propósito:*
+**Propósito:** Permitir a Jack desplazarse por los niveles, cruzar obstáculos y alcanzar zonas elevadas.
 
-Permitir que Jack Veil se desplace por los diferentes escenarios de Metronia, utilizando movimientos horizontales y saltos para explorar, superar obstáculos y alcanzar nuevas áreas del nivel.
+**Activación:** El jugador controla horizontalmente a Jack y pulsa salto cuando las condiciones del personaje lo permiten.
 
-*Activación:*
+**Reglas:** El desplazamiento se realiza en un plano 2D; el salto depende del contacto con suelo y de las condiciones físicas. Pendientes, gravedad, plataformas móviles y cadenas modifican el movimiento. El dash ofrece un desplazamiento breve con enfriamiento. Mientras Jack está inmovilizado por daño, ciertas animaciones o interacción, su movimiento puede limitarse.
 
-El jugador utiliza los controles de movimiento para desplazarse hacia la izquierda o derecha y el botón de salto para elevarse sobre plataformas u obstáculos.
+**Entrada:** `A/D` o flechas izquierda/derecha para movimiento, `Espacio` para salto y `Shift` para dash. `W/S` o flechas verticales intervienen con la escalada cuando Jack está cerca de una cadena.
 
-*Reglas:*
+**Estado inicial:** Jack puede moverse, siempre que no esté muerto, aturdido o bloqueado por otra acción.
 
-- Jack puede desplazarse horizontalmente dentro de un entorno bidimensional.
-- El personaje puede saltar cuando se encuentra sobre una superficie válida.
-- La gravedad determina la trayectoria del salto y el descenso del personaje.
-- El desplazamiento debe considerar las colisiones con plataformas, paredes y elementos del escenario.
-- Las pendientes y superficies elevadas pueden modificar el recorrido del jugador.
-- El movimiento puede quedar limitado temporalmente mientras Jack recibe daño, realiza determinadas acciones o interactúa con mecanismos.
-- La velocidad y capacidad de salto pueden incrementarse mediante consumibles o mejoras específicas.
+**Estado final:** Jack aterriza, se detiene o completa el desplazamiento, o cae a una zona letal.
 
-*Entrada:*
+**Recursos utilizados:** Físicas 2D, detección de suelo, parámetros de velocidad/salto, animaciones y enfriamiento de dash.
 
-- A / D o flechas direccionales: movimiento horizontal.
-- Espacio: salto.
+**Recompensa:** Avance espacial, evasión y acceso a nuevas secciones.
 
-*Estado inicial:*
+**Penalización:** Una caída o el contacto con un peligro puede causar daño o muerte.
 
-Jack se encuentra sobre una plataforma o superficie válida, preparado para desplazarse.
+**Interacciones con otras mecánicas:** Combate, escalada, obstáculos, elevador, dash, adrenalina y mejora de prótesis.
 
-*Estado final:*
+**Casos límite:** No permitir saltos adicionales accidentales; impedir dash ilimitado; conservar comportamiento predecible en bordes, pendientes y plataformas móviles; evitar que los efectos de velocidad queden activos después de morir.
 
-El personaje alcanza una nueva posición, aterriza sobre otra superficie o se detiene después del movimiento.
+### Mecánica 02 — Combate cuerpo a cuerpo con brazo mecánico
 
-*Recursos utilizados:*
+**Propósito:** Permitir que Jack derrote enemigos próximos usando sus prótesis, sin requerir armas externas.
 
-Sistema de físicas 2D de Unity, detección de superficies, animaciones de movimiento y parámetros de velocidad, gravedad y salto.
+**Activación:** El jugador pulsa el ataque correspondiente durante el desplazamiento o cuando está frente a un enemigo.
 
-*Recompensa:*
+**Reglas:** Jack comienza el juego con el **brazo mecánico** como arma principal. El sistema contiene una secuencia de hasta cuatro golpes, ataque aéreo, Uppercut, CrossKick y un ataque especial RayPunch. Las acciones se encuentran sujetas a ventanas de animación, estados de daño y reglas de transición entre golpes. El daño físico puede aumentar mediante la **Actualización a prótesis de combate** (×1.5; un solo nivel).
 
-Permite explorar nuevas áreas, superar obstáculos, evitar peligros y avanzar hacia los objetivos establecidos.
+**Entrada:** `J` (combo básico), `K` (Uppercut), `L` (CrossKick), `I` (RayPunch); también puede utilizarse `Enter` o clic izquierdo para el ataque principal.
 
-*Penalización:*
+**Estado inicial:** Jack está activo, sin bloqueo de ataque, y dispone de las condiciones necesarias para la acción solicitada.
 
-Un movimiento incorrecto puede provocar que Jack caiga en zonas peligrosas, reciba daño o pierda la vida.
+**Estado final:** Se ejecuta la animación, se verifica contacto, se aplica daño o se registra un ataque fallido; el personaje vuelve a un estado disponible.
 
-*Interacciones con otras mecánicas:*
+**Recursos utilizados:** Animaciones, hitboxes, datos de ataque, reserva de energía y salud de los objetivos.
 
-Combate, dash, escalada, interacción con plataformas, trampas, inyección de adrenalina y mejora de prótesis de combate.
+**Recompensa:** Infligir daño, conseguir recursos de enemigos y recuperar energía al acertar golpes cuando corresponda.
 
-*Casos límite:*
+**Penalización:** Atacar fuera de rango deja a Jack expuesto; el RayPunch gasta energía y no se ejecuta si es insuficiente.
 
-Si el personaje cae fuera de los límites permitidos del escenario o entra en contacto con una zona letal, se activa su muerte. También deben evitarse saltos adicionales no autorizados o movimientos durante estados que bloqueen el control del personaje.
+**Interacciones con otras mecánicas:** Movimiento, caída, dash, salud, IA enemiga, energía y mejora de prótesis.
 
----
+**Casos límite:** Evitar múltiples impactos indebidos al mismo objetivo por un golpe; cancelar ataques apropiadamente al recibir daño; no permitir ataques estando muerto o bloqueado; verificar la persistencia de mejoras tras reaparición.
 
-### Mecánica 02: Combate cuerpo a cuerpo
+### Mecánica 03 — Combate a distancia con blaster
 
-*Propósito:*
+**Propósito:** Ofrecer un segundo estilo de combate, con ataques a distancia que complementan el brazo mecánico.
 
-Permitir que Jack Veil enfrente y derrote enemigos utilizando su brazo mecánico, que funciona como su arma principal desde el comienzo del videojuego.
+**Activación:** Al inicio del Nivel 2, Jack derrota al **primer enemigo** y recoge la pistola que este deja caer. Desde ese momento, el blaster queda disponible permanentemente como arma predeterminada secundaria.
 
-*Activación:*
+**Reglas:** Antes de recoger la pistola no puede dispararse. Una vez adquirida, puede utilizarse en los niveles restantes, con las restricciones de munición y recarga. La mejora **Incremento ilegal de blaster** duplica su daño (×2) una sola vez; no modifica el brazo mecánico.
 
-El jugador ejecuta ataques mediante los controles correspondientes mientras Jack se encuentra en condiciones de combatir.
+**Entrada:** `U` para disparar y acción de recoger para adquirir el arma.
 
-*Reglas:*
+**Estado inicial:** Blaster bloqueado hasta obtener el objeto.
 
-- Jack comienza la aventura equipado con su brazo mecánico.
-- Los ataques físicos tienen un alcance limitado y requieren acercarse a los enemigos.
-- El jugador puede realizar una secuencia de hasta cuatro golpes consecutivos.
-- El sistema incorpora movimientos adicionales como Uppercut, CrossKick y ataques aéreos.
-- Los ataques deben respetar sus respectivas animaciones y tiempos de ejecución.
-- Los enemigos reciben daño cuando entran en contacto con el área efectiva del ataque.
-- Algunas acciones pueden interrumpirse cuando Jack recibe daño o queda incapacitado.
-- El daño físico aumenta un 50% al adquirir la mejora *Actualización a prótesis de combate*.
+**Estado final:** Proyectil disparado, daño aplicado cuando impacta y munición actualizada según las reglas activas.
 
-*Entrada:*
+**Recursos utilizados:** Proyectiles de plasma, animaciones, munición y variable de daño a distancia.
 
-- J: combo de golpes.
-- K: Uppercut.
-- L: CrossKick.
-- I: RayPunch, ataque especial que requiere energía.
+**Recompensa:** Alcance superior, nuevas posibilidades tácticas y daño duplicado si se adquiere la mejora.
 
-*Estado inicial:*
+**Penalización:** Tiempo de recarga y consumo de munición y limitación de movimiento durante ciertas animaciones de disparo.
 
-Jack se encuentra disponible para atacar y no presenta restricciones que impidan realizar la acción.
+**Interacciones con otras mecánicas:** IA, salud de enemigos, objetos destructibles, guardado, HUD y máquina de mejoras.
 
-*Estado final:*
-
-El personaje completa su movimiento de ataque y regresa a un estado que le permite continuar combatiendo o desplazándose.
-
-*Recursos utilizados:*
-
-Brazo mecánico, animaciones de combate, áreas de impacto, estadísticas de daño y sistema de salud de enemigos.
-
-*Recompensa:*
-
-Infligir daño, derrotar enemigos, obtener recursos y acumular energía para determinados ataques especiales.
-
-*Penalización:*
-
-Al acercarse a los enemigos, Jack queda expuesto a recibir ataques. Además, utilizar movimientos en momentos incorrectos puede dejarlo vulnerable durante sus animaciones.
-
-*Interacciones con otras mecánicas:*
-
-Movimiento, dash, ataques especiales, salud, inteligencia artificial enemiga, recolección de recursos y mejoras del personaje.
-
-*Casos límite:*
-
-Los ataques no deben ejecutarse cuando Jack se encuentra muerto o incapacitado. Cada golpe debe registrar correctamente sus impactos, evitando aplicar daño repetido de manera involuntaria a un mismo enemigo.
-
----
-
-### Mecánica 03: Combate a distancia
-
-*Propósito:*
-
-Permitir que Jack Veil ataque enemigos y objetos destructibles desde una distancia segura mediante el uso de una pistola tecnológica denominada blaster.
-
-*Activación:*
-
-Al comienzo del segundo nivel, Jack debe derrotar al primer enemigo que encuentra utilizando su brazo mecánico. Una vez destruido, dicho enemigo deja caer el blaster, que puede ser recogido por el jugador.
-
-Después de obtenerlo, el arma queda disponible como parte permanente del equipamiento del personaje.
-
-*Reglas:*
-
-- El blaster no está disponible durante el primer nivel.
-- Jack debe adquirirlo derrotando al primer enemigo del Distrito Industrial.
-- Una vez obtenido, el jugador puede alternar entre los ataques físicos del brazo mecánico y los disparos.
-- Los proyectiles recorren una trayectoria horizontal hasta impactar contra un objetivo o desaparecer según las reglas del escenario.
-- Los disparos infligen daño a enemigos y determinados objetos destructibles.
-- El sistema actual de Unity dispone de munición y cargadores, por lo que el jugador debe administrar los disparos disponibles.
-- El blaster puede recibir una única mejora denominada *Incremento ilegal de blaster*, que duplica su daño original.
-- El arma debe conservarse después de completar el nivel y al recuperar una partida que ya haya registrado su adquisición.
-
-*Entrada:*
-
-- U: disparar con el blaster.
-- Recogida del arma: interacción con el objeto soltado por el enemigo; entrada definitiva pendiente de implementar.
-
-*Estado inicial:*
-
-Durante el primer nivel, Jack solamente dispone del brazo mecánico. El blaster permanece bloqueado hasta su adquisición en el segundo nivel.
-
-*Estado final:*
-
-El arma dispara un proyectil que puede impactar contra un enemigo u objeto, provocando daño y actualizando los recursos de munición correspondientes.
-
-*Recursos utilizados:*
-
-Blaster, proyectiles de energía, animaciones de disparo, sistema de daño y munición.
-
-*Recompensa:*
-
-Permite enfrentar enemigos a distancia, ampliar las posibilidades de combate y destruir determinados objetivos sin necesidad de acercarse.
-
-*Penalización:*
-
-El uso del arma requiere administrar su munición según el sistema que se conserve en la versión final. Los momentos de disparo también pueden dejar al jugador expuesto a ataques enemigos.
-
-*Interacciones con otras mecánicas:*
-
-Movimiento, combate cuerpo a cuerpo, salud de enemigos, destrucción de objetos, recolección de recursos y máquina de mejoras.
-
-*Casos límite:*
-
-El jugador no podrá utilizar el blaster antes de adquirirlo. Si Jack muere después de recogerlo, el arma deberá conservarse al reaparecer, siempre que su adquisición se haya registrado correctamente. El enemigo que lo entrega no debe generar múltiples copias del arma.
+**Casos límite:** Garantizar que el primer enemigo entregue el arma exactamente una vez; permitir recuperarla después de una muerte antes de recogerla; conservarla tras checkpoints, cambios de nivel y carga de partida; impedir comprar una pistola ya obtenida.
 
 ## Mecánicas secundarias
 
-Las mecánicas secundarias complementan las acciones principales del jugador mediante habilidades especiales, interacciones con el entorno y sistemas de apoyo que permiten afrontar diferentes situaciones.
-
 ### Dash
 
-*Propósito:* Permitir que Jack realice un desplazamiento rápido para esquivar ataques, superar distancias cortas y mejorar su movilidad.
+**Propósito:** Evasión o movilidad breve. **Activación / entrada:** `Shift`. **Reglas:** impulso de duración limitada y enfriamiento; velocidad 15, duración 0.2 s y recarga 1 s. **Estado inicial/final:** listo → desplazamiento → enfriamiento → listo. **Recompensa:** evita peligros y facilita desplazamientos. **Penalización:** no puede encadenarse sin esperar. **Interacción:** movimiento, daño y plataformas. **Caso límite:** no reutilizarlo durante la recarga.
 
-*Activación:* El jugador presiona Shift.
+### Escalada de cadenas
 
-*Reglas:* Jack ejecuta un impulso horizontal de corta duración. Después de utilizarlo, debe transcurrir un tiempo de recarga antes de volver a ejecutarlo.
+**Propósito:** Acceder a alturas industriales. **Activación / entrada:** aproximarse a una cadena y utilizar movimiento vertical. **Reglas:** depende de proximidad y estado del jugador. **Estado inicial/final:** cerca de cadena → escalando → salida por extremo o salto. **Recursos:** áreas escalables, física y animación. **Recompensa:** acceso vertical. **Penalización:** vulnerabilidad frente a peligros. **Interacción:** salto, combate y elevador. **Caso límite:** evitar engancharse repetidamente al salir.
 
-*Estado inicial:* Dash disponible.
+### RayPunch y energía de combate
 
-*Estado final:* El impulso termina y comienza su tiempo de recuperación.
+**Propósito:** Introducir decisiones sobre ataques especiales. **Activación / entrada:** `I` con suficiente energía. **Reglas:** Jack dispone de una reserva de energía que aumenta al conectar determinados golpes y disminuye al ejecutar el ataque. **Estado inicial/final:** reserva disponible → gasto → ataque → recarga posterior. **Recompensa:** ataque especial. **Penalización:** no usarlo sin energía suficiente. **Interacción:** combo, HUD y sistema de daño. **Caso límite:** la interfaz utiliza una denominación consistente para la energía.
 
-*Recursos utilizados:* Sistema de movimiento, físicas 2D, animaciones y temporizador de recarga.
+### Interacción con mecanismos
 
-*Recompensa:* Mayor movilidad y capacidad para evitar determinados peligros.
+**Propósito:** Activar elementos del escenario. **Activación / entrada:** acercarse e interactuar con `E`. **Reglas:** solo interactuar con objetivos accesibles y habilitados. **Estado inicial/final:** objeto inactivo/bloqueado → interacción válida → acción o transición. **Recompensa:** utilizar elevador, máquina de mejoras o puerta. **Penalización:** imposibilidad temporal si no se cumple el requisito. **Interacción:** objetivos, salud de tanques, nivel actual y HUD. **Caso límite:** pulsaciones repetidas no deben abrir dos interfaces ni cargar dos escenas.
 
-*Penalización:* La habilidad no puede utilizarse continuamente mientras se encuentra en recuperación.
+### Destrucción de objetivos industriales
 
-*Interacciones con otras mecánicas:* Movimiento, plataformas, combate y evasión.
+**Propósito:** Convertir el combate en una condición de progreso del nivel 2. **Activación:** dañar los tres tanques vinculados a la puerta del Obelisco. **Reglas:** los tres deben quedar destruidos para desbloquear la salida. **Estado inicial/final:** tanques intactos → destruidos → puerta disponible. **Recompensa:** acceso al próximo nivel. **Penalización:** ruta bloqueada hasta cumplir el objetivo. **Interacción:** armas, efectos y mecanismo de desbloqueo de la salida. **Caso límite:** no contabilizar dos veces el mismo tanque.
 
-*Casos límite:* El dash debe interrumpirse apropiadamente cuando Jack muere o entra en un estado incompatible con la habilidad.
+### Uso de botiquín
 
-### Escalada
+**Propósito:** Recuperar salud. **Activación:** consumir un botiquín disponible. **Reglas:** no superar la salud máxima vigente. **Estado inicial/final:** salud dañada → curación → consumo de unidad. **Recompensa:** resistencia adicional. **Penalización:** pierde el consumible. **Interacción:** salud, HUD e inventario. **Caso límite:** evitar consumo accidental al estar al máximo.
 
-*Propósito:* Permitir el desplazamiento vertical mediante cadenas y estructuras específicas del escenario.
+### Inyección de adrenalina
 
-*Activación:* El jugador se aproxima a una superficie escalable y utiliza los controles de movimiento vertical.
+**Propósito:** Mejorar movilidad durante un periodo breve. **Activación:** consumir una inyección. **Reglas:** Jack corre más rápido y salta más alto durante **5 segundos**, sin reemplazar la mejora permanente de prótesis. **Estado inicial/final:** valores vigentes → boost activo → regreso automático a valores anteriores. **Recompensa:** facilitar escape o plataformas. **Penalización:** consumo del objeto. **Interacción:** velocidad, salto y mejora ×1.3. **Casos límite:** una segunda aplicación no acumula el bono mientras el efecto está activo; al morir se cancela.
 
-*Reglas:* Jack puede ascender o descender únicamente cuando se encuentra dentro del área que permite la escalada. Durante esta acción, su movimiento debe adaptarse a las condiciones de la estructura.
+### Inyección de carbón activado
 
-*Estado inicial:* Jack se encuentra próximo a una cadena.
+**Propósito:** Otorgar una reserva temporal de salud. **Activación:** consumir la inyección. **Reglas:** incrementa la salud máxima efectiva en **20%** respecto de la salud máxima base vigente. Los puntos extra absorben daño hasta agotarse; entonces se pierde el incremento. Morir cancela el efecto y Jack reaparece con salud normal. **Estado inicial/final:** salud normal → +20% temporal → absorción del bono o muerte → salud normal. **Recompensa:** mayor supervivencia. **Penalización:** consumible gastado. **Interacción:** daño, HUD, respawn y botiquín. **Caso límite:** evitar bonificaciones duplicadas y que la vida normal permanezca inflada.
 
-*Estado final:* El personaje abandona la estructura y recupera su movimiento habitual.
+### Checkpoints y oportunidades
 
-*Recursos utilizados:* Detección de áreas escalables, físicas 2D y animaciones.
+**Propósito:** Reducir repetición y ofrecer consecuencias comprensibles a la muerte. **Activación:** alcanzar/activar un checkpoint; morir cuando se tiene una oportunidad. **Reglas:** registrar la posición y nivel del checkpoint, descontar una oportunidad por muerte y elegir respawn o Game Over según saldo. **Estado inicial/final:** jugando → derrota → reaparecer o menú. **Recompensa:** continuidad desde una zona alcanzada. **Penalización:** pérdida de oportunidad y, si aplica, recursos temporales. **Interacción:** salud, guardado JSON, inventario y UI. **Caso límite:** cada muerte descuenta solo una oportunidad y la reaparición respeta el punto de control válido.
 
-*Recompensa:* Acceso a plataformas elevadas y rutas alternativas.
+### Mejoras de la máquina
 
-*Penalización:* Durante la escalada, la movilidad del personaje se encuentra limitada.
+**Propósito:** Fortalecer a Jack mediante inversión de recursos. **Activación:** interactuar con la máquina, ubicada en el nivel 2. **Reglas:** **Actualización a prótesis de combate** (movimiento ×1.3, salto ×1.3, daño físico ×1.5) e **Incremento ilegal de blaster** (daño del blaster ×2); máximo una compra por mejora. La segunda debe exigir que Jack ya tenga el blaster. **Estado inicial/final:** mejora disponible → compra validada → mejora aplicada y persistente. **Recompensa:** aumento de capacidades. **Penalización:** gasto de tuercas. **Interacción:** economía, estadísticas y guardado. **Casos límite:** evitar compras duplicadas, restaurar mejoras tras carga y aplicar los costos establecidos para cada mejora.
 
-*Interacciones con otras mecánicas:* Movimiento, salto, plataformas y mecanismos del escenario.
-
-*Casos límite:* El personaje debe abandonar correctamente el estado de escalada cuando alcanza el extremo de una cadena o se separa de ella.
-
-### Ataque especial y energía
-
-*Propósito:* Complementar el combate físico mediante un ataque especial que requiere administrar una reserva de energía.
-
-*Activación:* El jugador presiona I para ejecutar RayPunch cuando dispone de energía suficiente.
-
-*Reglas:* Determinados ataques físicos permiten recuperar energía al impactar enemigos. El RayPunch consume parte de esta reserva y no puede ejecutarse si la cantidad disponible es insuficiente.
-
-*Estado inicial:* Jack dispone de la energía necesaria para ejecutar el ataque.
-
-*Estado final:* El ataque se realiza y la reserva de energía disminuye.
-
-*Recursos utilizados:* Medidor de energía, animaciones, sistema de combate y parámetros de consumo.
-
-*Recompensa:* Acceso a un ataque especial que amplía las posibilidades ofensivas.
-
-*Penalización:* La energía gastada debe recuperarse mediante las acciones correspondientes.
-
-*Interacciones con otras mecánicas:* Combate cuerpo a cuerpo, daño, HUD y enemigos.
-
-*Casos límite:* El ataque debe impedirse cuando la reserva es insuficiente. La denominación definitiva del recurso debe unificarse, ya que el proyecto utiliza términos relacionados con vapor y aceite.
-
-### Recolección de recursos
-
-*Propósito:* Permitir que el jugador obtenga materiales para adquirir mejoras y fortalecer las capacidades de Jack.
-
-*Activación:* El personaje recoge los recursos que aparecen durante el recorrido, principalmente después de derrotar enemigos.
-
-*Reglas:* Los recursos recolectados se acumulan y pueden utilizarse en la máquina de mejoras. El proyecto utiliza actualmente tuercas como unidad de intercambio.
-
-*Estado inicial:* El recurso se encuentra disponible dentro del escenario.
-
-*Estado final:* El recurso desaparece del entorno y su valor se agrega al total del jugador.
-
-*Recursos utilizados:* Objetos recolectables, contador de tuercas e interfaz.
-
-*Recompensa:* Obtener los materiales necesarios para adquirir mejoras.
-
-*Penalización:* Los recursos gastados disminuyen del total disponible. El sistema actual permite perder temporalmente las tuercas al morir.
-
-*Interacciones con otras mecánicas:* Combate, muerte, máquina de mejoras y progresión.
-
-*Casos límite:* Evitar que un mismo recurso se recoja varias veces. Si se conserva el sistema de bolsa de tuercas, debe impedirse su duplicación al reaparecer.
-
-### Interacción con objetos y mecanismos
-
-*Propósito:* Permitir que Jack utilice elementos del entorno necesarios para avanzar.
-
-*Activación:* El jugador se aproxima a un objeto interactivo y utiliza la acción correspondiente, actualmente E.
-
-*Reglas:* Algunos mecanismos solamente pueden activarse cuando se cumplen determinadas condiciones, como eliminar enemigos, destruir objetos o encontrarse dentro del área de interacción.
-
-*Estado inicial:* El objeto está disponible, desactivado o bloqueado según sus condiciones.
-
-*Estado final:* El mecanismo se activa, cambia de estado o permite continuar el recorrido.
-
-*Recursos utilizados:* Detectores de proximidad, animaciones, componentes interactivos y eventos.
-
-*Recompensa:* Apertura de puertas, activación de elevadores y acceso a nuevas zonas.
-
-*Penalización:* No cumplir los requisitos impide activar determinados mecanismos.
-
-*Interacciones con otras mecánicas:* Exploración, combate, destrucción de objetos y progresión.
-
-*Casos límite:* Evitar activar repetidamente un mecanismo mientras su animación o proceso de transición todavía está ejecutándose.
-
-### Destrucción de objetos
-
-*Propósito:* Permitir que el jugador destruya elementos específicos del escenario para completar objetivos o desbloquear caminos.
-
-*Activación:* Jack utiliza sus ataques contra objetos identificados como destructibles.
-
-*Reglas:* Los objetos cuentan con condiciones de destrucción que deben cumplirse antes de considerarlos eliminados. Durante el segundo nivel, el jugador debe destruir los tres tanques industriales vinculados a la salida.
-
-*Estado inicial:* El objeto permanece intacto y puede recibir daño.
-
-*Estado final:* El objeto queda destruido y se actualiza el progreso del objetivo correspondiente.
-
-*Recursos utilizados:* Sistema de daño, colisiones, animaciones de destrucción y eventos.
-
-*Recompensa:* Cumplimiento de objetivos y desbloqueo de nuevas áreas.
-
-*Penalización:* Los caminos que dependen de su destrucción permanecen bloqueados hasta completar la condición.
-
-*Interacciones con otras mecánicas:* Combate, exploración, misiones y mecanismos.
-
-*Casos límite:* Un objeto destruido no debe registrar nuevamente su destrucción ni incrementar varias veces el contador de objetivos.
-
-### Uso de consumibles
-
-*Propósito:* Proporcionar beneficios de recuperación o fortalecimiento temporal durante los enfrentamientos y la exploración.
-
-*Activación:* El jugador utiliza un consumible disponible.
-
-*Reglas:*
-
-- *Botiquín:* Recupera una cantidad determinada de salud sin superar el máximo permitido.
-- *Inyección de adrenalina:* Incrementa temporalmente la velocidad de movimiento y la capacidad de salto de Jack durante 5 segundos.
-- *Inyección de carbón activado:* Aumenta la salud total efectiva del personaje en un 20%. Los puntos adicionales absorben daño hasta agotarse. Al perder completamente el beneficio o morir, Jack regresa a su salud máxima normal.
-
-*Estado inicial:* El jugador dispone del consumible correspondiente.
-
-*Estado final:* El objeto se consume y se aplica su efecto durante las condiciones establecidas.
-
-*Recursos utilizados:* Inventario de consumibles, sistema de salud, estadísticas de movimiento y temporizadores.
-
-*Recompensa:* Recuperación de salud o ventajas temporales de supervivencia y movilidad.
-
-*Penalización:* El objeto desaparece del inventario después de su utilización.
-
-*Interacciones con otras mecánicas:* Combate, movimiento, salud, mejoras y muerte.
-
-*Casos límite:* Los efectos temporales deben desaparecer correctamente al finalizar su duración o cumplirse su condición de terminación. La inyección de carbón activado no debe permitir conservar salud adicional después de morir.
-
-### Máquina de mejoras
-
-*Propósito:* Permitir que el jugador fortalezca las capacidades de Jack mediante la utilización de los recursos recolectados.
-
-*Activación:* El jugador interactúa con la máquina de mejoras disponible en el Distrito Industrial.
-
-*Reglas:*
-
-La máquina dispone de dos mejoras principales, cada una con un único nivel de actualización:
-
-1. *Actualización a prótesis de combate:* Incrementa la velocidad de movimiento un 30% (×1.3), la capacidad de salto un 30% (×1.3) y el daño físico un 50% (×1.5).
-2. *Incremento ilegal de blaster:* Duplica el daño de la pistola (×2).
-
-Las mejoras deben adquirirse utilizando los recursos necesarios y no pueden comprarse más de una vez. La mejora del blaster requiere que Jack haya obtenido previamente el arma.
-
-*Estado inicial:* Las mejoras están disponibles para adquirir, siempre que se cumplan sus requisitos.
-
-*Estado final:* Se descuentan los recursos correspondientes y se aplican permanentemente los beneficios adquiridos.
-
-*Recursos utilizados:* Tuercas, interfaz de mejoras y estadísticas del personaje.
-
-*Recompensa:* Incremento permanente de las capacidades de combate y movimiento.
-
-*Penalización:* Consumo de los recursos necesarios para adquirir cada actualización.
-
-*Interacciones con otras mecánicas:* Combate físico, blaster, movimiento, salto, recolección de recursos y guardado.
-
-*Casos límite:* Las mejoras adquiridas no deben aplicarse varias veces ni desaparecer al cambiar de nivel o recuperar una partida guardada.
-
-### Checkpoints y reaparición
-
-*Propósito:* Permitir que el jugador continúe su progreso después de perder una vida, evitando repetir completamente las secciones superadas.
-
-*Activación:* El jugador activa un checkpoint durante el recorrido. Cuando su salud llega a cero, se ejecuta la secuencia de derrota.
-
-*Reglas:* Al morir, Jack pierde una oportunidad. Si dispone de oportunidades restantes, puede reaparecer en el último checkpoint activado. Cuando estas se agotan, debe regresar al menú principal.
-
-*Estado inicial:* Jack se encuentra jugando, con salud y oportunidades disponibles.
-
-*Estado final:* El personaje reaparece en un checkpoint válido o termina su intento.
-
-*Recursos utilizados:* Sistema de salud, checkpoints, oportunidades, interfaz de derrota y datos de progreso.
-
-*Recompensa:* Continuar desde una sección alcanzada anteriormente.
-
-*Penalización:* Pérdida de una oportunidad y de los beneficios temporales que deban eliminarse al morir.
-
-*Interacciones con otras mecánicas:* Salud, consumibles, progresión, guardado y recuperación de partida.
-
-*Casos límite:* Si Jack muere antes de activar un checkpoint, debe utilizarse el punto inicial del nivel. Las oportunidades restantes y el último checkpoint válido deben registrarse correctamente cuando se implemente el sistema de guardado definitivo.
-
-Esta mecánica corresponde al flujo de juego previsto y todavía requiere implementación en Unity.
+> **Navegación:** [[00 - Índice]] · ← [[01 - Jugabilidad]] · [[03 - Sistemas]] →

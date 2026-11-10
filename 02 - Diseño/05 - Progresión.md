@@ -1,5 +1,3 @@
-05 - Progresion
-
 # Progresión
 
 ## Descripción de la sección
@@ -8,22 +6,17 @@ La progresión de **Vaporlock** describe cómo evoluciona la experiencia del jug
 
 El jugador comienza utilizando el brazo mecánico como arma principal y aprende a desplazarse, saltar y combatir. En el Distrito Industrial obtiene el blaster, accede a una máquina de mejoras y enfrenta desafíos que requieren combinar movilidad, combate e interacción con mecanismos. Finalmente, deberá aplicar lo aprendido para superar El Obelisco y derrotar a Lucius Corr.
 
-La progresión se basa en el dominio de las habilidades y los recursos disponibles, **sin un sistema de niveles de experiencia del personaje**.
+La progresión se basa en el dominio de las habilidades y los recursos disponibles, **sin un sistema de niveles de experiencia del personaje**. Los checkpoints, las oportunidades y el guardado JSON facilitan la continuidad de la aventura.
 
 ## Progresión general
 
 La aventura está organizada en seis etapas:
 
-1. **Inicio:** Desde el menú principal, el jugador elige iniciar una nueva partida o continuar una partida guardada. El flujo contempla una presentación breve de Jack Veil, todavía por definir, sin la antigua escena del ataque, hospital ni conversación con el Tecnócrata. La partida comienza en los Tejados de Metronia.
-
+1. **Inicio:** Desde el menú principal, el jugador elige iniciar una nueva partida o continuar una partida guardada. Una breve presentación introduce a Jack Veil. La partida comienza en los Tejados de Metronia.
 2. **Introducción de sistemas:** En el Nivel 1, el jugador conoce el movimiento horizontal, salto, dash, combate con el brazo mecánico y recolección de tuercas. Supera plataformas y enemigos; la salida industrial se habilita al cumplir la condición de eliminación de enemigos establecida en el escenario.
-
-3. **Desarrollo:** Al comenzar el Nivel 2, el primer enemigo derrotado deja caer el blaster, según el diseño acordado. Se introducen el combate a distancia, cadenas trepables, elevadores, objetos destructibles y la máquina de mejoras. Jack debe destruir los tres tanques industriales para abrir la salida.
-
+3. **Desarrollo:** Al comenzar el Nivel 2, el primer enemigo derrotado deja caer el blaster, como parte de la progresión. Se introducen el combate a distancia, cadenas trepables, elevadores, objetos destructibles y la máquina de mejoras. Jack debe destruir los tres tanques industriales para abrir la salida.
 4. **Dominio:** El jugador combina los ataques físicos y disparos con dash, saltos, escalada, consumibles y, si fueron adquiridas, mejoras permanentes. Debe gestionar salud y recursos mientras supera desafíos más exigentes.
-
-5. **Clímax:** En el Nivel 3, El Obelisco, el jugador enfrenta el tramo final y combate contra Lucius Corr. El diseño del jefe contempla refuerzos mecánicos y momentos en los que queda vulnerable. Esta etapa aún no se encuentra implementada como nivel jugable completo.
-
+5. **Clímax:** En el Nivel 3, El Obelisco, el jugador enfrenta el tramo final y combate contra Lucius Corr. El jefe utiliza refuerzos mecánicos y presenta momentos de vulnerabilidad que el jugador debe aprovechar para derrotarlo.
 6. **Final:** Tras derrotar a Lucius Corr, se registra el progreso y las estadísticas finales, y se presenta la pantalla de victoria y créditos.
 
 **Flujo de progresión:**
@@ -35,42 +28,29 @@ La aventura está organizada en seis etapas:
 El aprendizaje del jugador ocurre principalmente por la práctica y la incorporación gradual de desafíos:
 
 1. **Desplazamiento y orientación:** Aprender a moverse, detenerse, saltar y calcular distancias entre plataformas.
-
 2. **Combate físico:** Comprender el alcance del brazo mecánico, encadenar golpes y utilizar ataques especiales cuando sus condiciones lo permitan.
-
 3. **Supervivencia y evasión:** Reconocer ataques enemigos, utilizar el dash, controlar la salud y evitar caídas o zonas peligrosas.
-
 4. **Objetivos del escenario:** Identificar qué enemigos, puertas o mecanismos condicionan el avance del nivel.
-
 5. **Combate a distancia:** Recoger el blaster al principio del Nivel 2 y aprender a utilizarlo junto con el brazo mecánico.
-
 6. **Interacciones industriales:** Utilizar cadenas, elevadores y mecanismos; destruir los tanques necesarios para desbloquear la salida del Distrito Industrial.
-
 7. **Gestión de recursos:** Recolectar tuercas, utilizar consumibles y decidir cuándo adquirir alguna de las dos mejoras disponibles.
-
 8. **Dominio combinado:** Alternar movilidad, ataques físicos y disparos para afrontar enemigos más resistentes y, finalmente, el combate contra Lucius Corr.
 
-Los controles de movimientos y ataques especiales presentes desde el inicio no necesitan convertirse en desbloqueos adicionales: su aprendizaje puede ser progresivo aunque la acción ya esté disponible.
+Los controles de movimientos y ataques especiales presentes desde el inicio no necesitan convertirse en desbloqueos artificiales: su **aprendizaje** puede ser progresivo aunque la acción ya esté disponible.
 
 ## Progresión del personaje
 
 A diferencia del aprendizaje del jugador, la progresión de Jack corresponde a los cambios efectivos en su equipo, sus atributos y los recursos que conserva.
 
-- **Vida:** Jack dispone actualmente de una salud máxima base de 80 puntos en la configuración de Unity. Los botiquines recuperan salud, y la inyección de carbón activado concede temporalmente un 20% de salud adicional. No se ha definido una mejora permanente de salud máxima.
-
+- **Vida:** Jack dispone de una salud máxima base de 80 puntos. Los botiquines recuperan salud, y la inyección de carbón activado concede temporalmente un 20% de salud adicional. No existe una mejora permanente de salud máxima.
 - **Daño:** El brazo mecánico es el arma inicial. La mejora **Actualización a prótesis de combate** aumenta su daño físico en un 50% (×1.5). La mejora **Incremento ilegal de blaster** duplica el daño del arma (×2).
-
 - **Habilidades:** Jack utiliza movimiento, salto, dash, combos y ataques especiales; en el Distrito Industrial también aprovecha las cadenas y mecanismos del entorno. La mejora de prótesis incrementa un 30% su velocidad y capacidad de salto (×1.3 cada una).
-
 - **Equipo:** El brazo mecánico está disponible desde el inicio. El blaster se obtiene al derrotar al primer enemigo del Nivel 2 y permanece como herramienta habitual durante el resto del juego.
-
 - **Recursos:** Jack recolecta tuercas que puede gastar en la máquina de mejoras. El funcionamiento definitivo de la pérdida y recuperación de tuercas tras morir debe coordinarse con el sistema de checkpoints.
-
 - **Consumibles:** El botiquín recupera salud; la adrenalina aumenta temporalmente velocidad y salto durante cinco segundos; el carbón activado añade una reserva temporal del 20% de salud que se consume al recibir daño o se pierde al morir.
-
 - **Conocimiento:** El jugador aprende los patrones de los enemigos, las rutas y las condiciones de salida. Este progreso es de dominio del jugador y no se representa mediante puntos de experiencia.
 
-Las **únicas mejoras permanentes planificadas** son la actualización de prótesis de combate y el incremento ilegal de blaster, cada una con un solo nivel. Sus costos definitivos siguen por establecerse.
+Las **únicas mejoras permanentes** son la actualización de prótesis de combate y el incremento ilegal de blaster, cada una con un solo nivel. Sus costos son los indicados en la estación de mejoras.
 
 ## Desbloqueos
 
@@ -88,18 +68,16 @@ Las **únicas mejoras permanentes planificadas** son la actualización de próte
 
 La dificultad aumenta por la combinación de enemigos, peligros del escenario y cantidad de mecánicas que el jugador debe utilizar, en lugar de depender únicamente del incremento de daño enemigo.
 
-| Etapa | Dificultad | Desafío principal |
+| Etapa | Dificultad esperada | Desafío principal |
 |---|---|---|
 | Nivel 1 — Tejados de Metronia | Fácil | Aprender movimiento, salto, dash y combate físico; superar plataformas y enemigos básicos. |
 | Inicio del Nivel 2 — Distrito Industrial | Intermedia inicial | Obtener el blaster y comprender la combinación de ataques físicos y disparos. |
 | Resto del Nivel 2 | Intermedia | Utilizar cadenas y elevadores, administrar recursos, enfrentar variantes de enemigos y destruir los tres tanques. |
 | Nivel 3 — El Obelisco | Alta | Aplicar todas las habilidades aprendidas, superar obstáculos y enfrentar a Lucius Corr y sus refuerzos. |
 
-Los segmentos iniciales deben ofrecer desafíos que permitan reconocer las acciones disponibles. Posteriormente, se incrementan la variedad de enemigos, la exigencia del movimiento y la necesidad de alternar herramientas.
+Los segmentos iniciales deben ofrecer desafíos que permitan reconocer las acciones disponibles. Posteriormente, se incrementan la variedad de enemigos, la exigencia del movimiento y la necesidad de alternar herramientas. El enfrentamiento final debe comprobar el dominio de las mecánicas sin introducir controles fundamentales completamente nuevos.
 
-El enfrentamiento final debe comprobar el dominio de las mecánicas sin introducir controles fundamentales completamente nuevos.
-
-Los **checkpoints y oportunidades** previstos en el flujo de navegación permiten regular la penalización por derrota. Su cantidad, ubicación y balance necesitan definirse y probarse.
+Los **checkpoints y oportunidades** regulan la penalización por derrota. Al perder una oportunidad, Jack reaparece en el último checkpoint válido mientras disponga de oportunidades restantes.
 
 ## Curva de aprendizaje
 
@@ -117,10 +95,8 @@ Cada nuevo desafío debe apoyarse en conocimientos adquiridos previamente:
 
 La progresión debe comunicar de forma clara los nuevos recursos y objetivos. El blaster requiere una señal visual al caer del primer enemigo; las estaciones y mecanismos deben indicar cuándo pueden utilizarse; las puertas deben reflejar si sus condiciones de apertura están completas.
 
-El aprendizaje se considera exitoso cuando el jugador puede reconocer los peligros, seleccionar una herramienta apropiada y comprender por qué avanzó o fue derrotado.
-
-La dificultad debe fomentar la práctica sin obligarlo a descubrir reglas ocultas.
+El aprendizaje se considera exitoso cuando el jugador puede reconocer los peligros, seleccionar una herramienta apropiada y comprender por qué avanzó o fue derrotado. La dificultad debe fomentar la práctica sin obligarlo a descubrir reglas ocultas.
 
 ---
 
-**Navegación:** [[00 - Índice]] · ← [[04 - Controles]] · [[06 - Economía y Recursos]] →
+> **Navegación:** [[00 - Índice]] · ← [[04 - Controles]] · [[06 - Economía y Recursos]] →

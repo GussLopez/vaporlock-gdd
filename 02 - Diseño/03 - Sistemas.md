@@ -1,753 +1,310 @@
-03 - Sistemas del Juego
-
 # Sistemas del Juego
 
 ## Descripción de la sección
 
-Los sistemas de **Vaporlock** comprenden el conjunto de componentes y reglas que permiten el funcionamiento del videojuego, coordinando las acciones del jugador, el comportamiento de los enemigos, las interacciones con el escenario y la progresión de la aventura.
-
-Estos sistemas trabajan conjuntamente para proporcionar una experiencia de acción, aventura y plataformas en 2D, donde Jack Veil puede desplazarse, combatir, recolectar recursos, adquirir mejoras y completar los objetivos establecidos en cada nivel.
-
-Su funcionamiento busca mantener una relación coherente entre las mecánicas, los recursos disponibles y las consecuencias de las acciones del jugador, asegurando una experiencia comprensible y progresiva.
-
-El diseño contempla tanto los sistemas existentes en el proyecto de Unity como las funcionalidades previstas para la versión final del videojuego.
+Los sistemas de **Vaporlock** coordinan el movimiento, el combate, la salud, los enemigos, la interacción, los recursos, la progresión, el guardado y las interfaces. Cada sistema establece entradas, reglas y resultados que se relacionan entre sí para mantener una experiencia coherente a lo largo de los tres niveles.
 
 ## Inventario de sistemas
 
-| Sistema | Propósito | Dependencias | Estado |
-|---|---|---|---|
-| Movimiento y plataformas | Controlar el desplazamiento y las habilidades de movilidad de Jack. | Físicas 2D, controles y animaciones. | Implementado |
-| Combate cuerpo a cuerpo | Gestionar los ataques físicos y las habilidades especiales del brazo mecánico. | Daño, energía, animaciones y enemigos. | Implementado |
-| Arsenal y consumibles | Administrar el blaster, munición y objetos utilizables. | Combate, inventario y salud. | Parcial |
-| Salud, daño y muerte | Controlar la supervivencia del personaje. | Combate, enemigos y escenarios. | Implementado; adaptación pendiente |
-| Inteligencia artificial | Controlar el comportamiento de los enemigos. | Detección, movimiento y combate. | Implementado para enemigos actuales |
-| Interacción y objetivos | Gestionar mecanismos, puertas y condiciones de avance. | Jugador, enemigos y escenarios. | Implementado en niveles 1 y 2 |
-| Economía y mejoras | Administrar recursos y actualizaciones del personaje. | Recolección, estadísticas y estación de mejoras. | Parcial |
-| Checkpoints y oportunidades | Administrar la reaparición y los intentos disponibles. | Salud, niveles y guardado. | Por implementar |
-| Guardado y carga | Conservar y recuperar el progreso del jugador. | Progresión, recursos y serialización JSON. | Parcial |
-| Interfaz y navegación | Mostrar información y controlar las pantallas del videojuego. | HUD, controles y escenas. | Parcial |
-| Progresión y victoria | Coordinar la finalización de niveles y del videojuego. | Objetivos, enemigos, escenas y jefe final. | Parcial |
+| Sistema | Propósito | Dependencias principales |
+|---|---|---|
+| Movimiento y plataformas | Desplazamiento, salto, dash y escalada | Movimiento, físicas 2D y controles |
+| Combate físico y energía | Ataques del brazo y RayPunch | Combate, energía y salud |
+| Arsenal y consumibles | Blaster, munición y curación/buffs | Arsenal, estadísticas e inventario |
+| Salud, daño y muerte | Reducir salud, proteger frente a impactos y morir | Salud, daño y reaparición |
+| IA de enemigos | Detectar, perseguir y atacar a Jack | Comportamiento enemigo y salud |
+| Interacción y objetivos | Usar elevador, estación, puertas y tanques | Interacción, colisiones y objetivos |
+| Economía y mejoras | Obtener tuercas y comprar dos mejoras finales | Economía, mejoras y estadísticas |
+| Checkpoints y oportunidades | Recuperar el avance tras morir | Salud, escenas, guardado, HUD |
+| Guardado y continuación | Persistir partida, desbloqueos y estadísticas | Serialización JSON, progreso y gestor de escenas |
+| Menús, HUD y flujo | Mostrar estado y conectar pantallas | Controles, interfaces, escenas y guardado |
+| Progreso de niveles y victoria | Desbloquear puertas, niveles y créditos | Puertas, objetivos, jefe final y progreso |
 
 ## Plantilla de sistema
 
-Cada sistema se documenta mediante su objetivo, entradas, reglas de procesamiento, salidas, estados, dependencias e interacciones.
+Cada sistema registra: **nombre, objetivo, entradas, procesamiento/reglas, salidas, estados posibles, dependencias, interacciones, datos que necesita, datos que genera, riesgos y criterios de aceptación**.
 
-También se identifican los datos necesarios para su funcionamiento, los resultados que produce, los posibles riesgos y los criterios que permiten comprobar su funcionamiento correcto.
+## Sistema 01 — Movimiento y navegación 2D
 
-## Sistema 01 — Movimiento y plataformas
+**Objetivo:** Controlar a Jack con precisión en recorridos de plataformas y espacios industriales.
 
-**Objetivo:**
+**Entradas:** Movimiento horizontal y vertical contextual, salto y dash; contacto con suelo, pendientes, cadenas y plataformas.
 
-Permitir que Jack Veil se desplace e interactúe físicamente con los escenarios bidimensionales, proporcionando las habilidades necesarias para superar obstáculos, plataformas y estructuras industriales.
+**Procesamiento / reglas:** `Player` lee el Input System, calcula velocidad, saltos y dash; `PlayerClimb` permite movimiento vertical cuando existe una cadena disponible. Se evitan acciones incompatibles con daño, ataques o bloqueo de movimiento.
 
-**Entradas:**
+**Salidas:** Posición, velocidad, orientación, animaciones y eventos de colisión.
 
-Controles de movimiento horizontal, salto, dash y escalada, además de la detección de superficies, pendientes, cadenas y plataformas.
+**Estados posibles:** En suelo, en aire, saltando, cayendo, en dash, escalando, herido o bloqueado.
 
-**Procesamiento / reglas:**
+**Dependencias:** `Rigidbody2D`, colliders, layer de suelo, `Player`, `PlayerClimb` y animator.
 
-El sistema interpreta las entradas del jugador y modifica el movimiento del personaje mediante las físicas 2D de Unity.
+**Interacciones:** Combate, zonas letales, elevador, adrenalina y mejora de prótesis.
 
-Jack puede desplazarse horizontalmente, saltar sobre plataformas, utilizar un dash de corta duración y ascender o descender por cadenas.
+**Datos que necesita:** Entradas, posición, velocidad base, potencia de salto y modificadores activos.
 
-Las acciones respetan las condiciones físicas del escenario y los estados del personaje. Su rendimiento puede modificarse mediante consumibles temporales o mejoras permanentes.
+**Datos que genera:** Estado de movilidad, posición del jugador y contacto con superficies.
 
-**Salidas:**
+**Riesgos:** Saltos inconsistentes, boosts acumulados sin control o movimientos disponibles durante estados bloqueados.
 
-Desplazamiento del personaje, cambios de posición, animaciones de movimiento y detección de colisiones con el escenario.
-
-**Estados posibles:**
-
-En reposo, caminando, saltando, cayendo, realizando dash, escalando, recibiendo daño o incapacitado.
-
-**Dependencias:**
-
-Sistema de controles, Rigidbody2D, Collider2D, físicas de Unity y animaciones del personaje.
-
-**Interacciones:**
-
-Combate, obstáculos, elevadores, trampas, consumibles y mejoras de prótesis.
-
-**Datos que necesita:**
-
-Velocidad de movimiento, fuerza de salto, gravedad, duración y recuperación del dash, estado físico y modificadores activos.
-
-**Datos que genera:**
-
-Posición, velocidad, dirección, estado de movimiento y eventos de contacto con superficies.
-
-**Riesgos:**
-
-Errores de colisión, movimientos inconsistentes, saltos no permitidos o acumulación incorrecta de bonificaciones de velocidad y salto.
-
-**Criterios de aceptación:**
-
-El jugador puede desplazarse, saltar, realizar dash y trepar cadenas correctamente. Las mejoras y consumibles modifican los atributos correspondientes sin afectar el funcionamiento normal de las físicas.
-
----
+**Criterios de aceptación:** Jack se mueve y salta de forma reproducible; el dash respeta enfriamiento; puede trepar cadenas; las mejoras permanentes y temporales se aplican y retiran correctamente.
 
 ## Sistema 02 — Combate cuerpo a cuerpo y energía
 
-**Objetivo:**
+**Objetivo:** Gestionar golpes de brazo mecánico, combos y ataque especial RayPunch.
 
-Gestionar los ataques físicos que Jack Veil realiza mediante su brazo mecánico, permitiéndole enfrentar enemigos y utilizar habilidades especiales durante el combate.
+**Entradas:** Comandos de ataque, estados de Jack, posición de objetivos, reserva de energía.
 
-**Entradas:**
+**Procesamiento / reglas:** Verifica si el movimiento es válido, reproduce la animación, calcula el área de golpe, aplica daño una vez por impacto y recupera o gasta energía. Los ataques disponibles dependen de ventanas de combo y estado físico. La mejora de prótesis aplica un multiplicador de daño físico **×1.5**.
 
-Comandos de ataque, posición del jugador, presencia de enemigos, estado de combate y cantidad de energía disponible.
+**Salidas:** Daño, reacciones enemigas, efectos, cambios en la reserva energética y eventos de derrota.
 
-**Procesamiento / reglas:**
+**Estados posibles:** Listo, ejecutando ataque, recuperándose, combo en progreso, bloqueado o sin energía suficiente.
 
-El sistema identifica el ataque seleccionado, comprueba que Jack se encuentre en condiciones de ejecutarlo y reproduce la animación correspondiente.
+**Dependencias:** `PlayerCombat`, `AttackData`, `DamageInfo`, `Health`, animaciones y HUD de energía.
 
-El brazo mecánico permite realizar combinaciones de golpes, ataques aéreos y movimientos especiales como Uppercut, CrossKick y RayPunch.
+**Interacciones:** Movimiento, daño del jugador, IA y recurso de combate.
 
-Los ataques aplican daño cuando alcanzan correctamente a un enemigo. Algunos movimientos permiten recuperar energía, mientras que los ataques especiales consumen parte de esta reserva.
+**Datos que necesita:** Daño base, multiplicador físico, alcance, costo del RayPunch y energía actual.
 
-Cuando el jugador adquiere la actualización a prótesis de combate, el daño físico aumenta un 50% respecto al valor original.
+**Datos que genera:** Impactos confirmados, daño aplicado y energía actualizada.
 
-**Salidas:**
+**Riesgos:** Doble registro de impacto, discrepancia entre animación y hitbox, recursos negativos o mal llamados.
 
-Daño a enemigos, animaciones de ataque, efectos de impacto, alteraciones en la energía disponible y eventos de derrota de enemigos.
+**Criterios de aceptación:** Combo, Uppercut, CrossKick, ataque aéreo y RayPunch responden a las entradas; no se ejecutan ataques inválidos; el daño aumenta ×1.5 solo cuando la mejora correspondiente está activa.
 
-**Estados posibles:**
+## Sistema 03 — Arsenal y objetos consumibles
 
-Disponible, atacando, ejecutando combo, utilizando habilidad especial, recuperándose o incapacitado.
+**Objetivo:** Administrar blaster, munición cuando aplique, botiquín, adrenalina y carbón activado.
 
-**Dependencias:**
+**Entradas:** Recogida de la pistola, uso de arma, daño/curación, uso de objetos y compra de mejora.
 
-Sistema de controles, animaciones, detección de impactos, energía y salud de enemigos.
+**Procesamiento / reglas:** Jack no posee blaster en el nivel 1; al derrotar al primer enemigo del nivel 2, recoge el objeto y se habilita la capacidad de disparar de forma permanente. El botiquín cura sin rebasar el máximo. La adrenalina aumenta movilidad durante **5 segundos**. El carbón activado otorga **+20% de salud temporal**, consumida prioritariamente por daño o eliminada al morir. El blaster puede recibir una mejora única **×2 de daño**.
 
-**Interacciones:**
+**Salidas:** Inventario y estado de armas, barras/indicadores, proyectiles, curación y buffs.
 
-Movimiento, inteligencia artificial, salud, recolección de recursos y máquina de mejoras.
+**Estados posibles:** Blaster bloqueado/disponible; arma lista/recargando; consumible disponible/en uso/agotado; buff activo/inactivo.
 
-**Datos que necesita:**
+**Dependencias:** Arsenal, estadísticas, salud, progresión e interfaz.
 
-Daño de ataques, alcance, duración, energía disponible, costo de habilidades y multiplicadores activos.
+**Interacciones:** Combate, salud, IA, reaparición, máquina y guardado.
 
-**Datos que genera:**
+**Datos que necesita:** `hasBlaster`, munición, cantidad de consumibles, duración de buffs, vida base y mejorada.
 
-Ataques ejecutados, daño infligido, energía consumida o recuperada y eventos de eliminación de enemigos.
+**Datos que genera:** Cambios de inventario, salud, temporizadores, proyectiles y desbloqueos.
 
-**Riesgos:**
+**Riesgos:** Pérdida del blaster al reiniciar, efecto de salud permanente por error o adquisición repetida.
 
-Impactos registrados varias veces, ataques ejecutados durante estados incompatibles o consumo incorrecto de energía.
-
-**Criterios de aceptación:**
-
-Los ataques responden correctamente a los controles, producen daño únicamente cuando alcanzan un objetivo válido y respetan las condiciones de ejecución y consumo de energía.
-
----
-
-## Sistema 03 — Arsenal y consumibles
-
-**Objetivo:**
-
-Administrar el armamento disponible y los objetos consumibles que Jack puede utilizar durante su aventura.
-
-**Entradas:**
-
-Obtención del blaster, comandos de disparo, recolección y utilización de consumibles, munición disponible y mejoras adquiridas.
-
-**Procesamiento / reglas:**
-
-Jack comienza el videojuego utilizando exclusivamente su brazo mecánico.
-
-Al inicio del segundo nivel, después de derrotar al primer enemigo, este deja caer un blaster que el jugador puede recoger. Desde ese momento, el arma queda disponible permanentemente junto con el brazo mecánico.
-
-El blaster permite disparar proyectiles de energía contra enemigos y determinados objetos destructibles.
-
-El sistema también administra los siguientes consumibles:
-
-- **Botiquín:** Recupera una cantidad determinada de salud.
-- **Inyección de adrenalina:** Incrementa temporalmente la velocidad y capacidad de salto durante 5 segundos.
-- **Inyección de carbón activado:** Proporciona un incremento temporal del 20% de la salud máxima de Jack. La salud adicional absorbe daño hasta agotarse y desaparece al morir.
-
-La mejora Incremento ilegal de blaster duplica el daño original de sus disparos.
-
-El sistema de munición existente en Unity deberá mantenerse o adaptarse de acuerdo con las reglas definitivas del arma.
-
-**Salidas:**
-
-Disparos, consumo de munición, recuperación de salud, bonificaciones temporales y actualización de los objetos disponibles.
-
-**Estados posibles:**
-
-Arma bloqueada, arma disponible, disparando, recargando, consumible disponible, efecto activo o efecto terminado.
-
-**Dependencias:**
-
-Sistema de combate, salud, inventario, estadísticas, mejoras y controles.
-
-**Interacciones:**
-
-Enemigos, objetos destructibles, exploración, guardado y reaparición.
-
-**Datos que necesita:**
-
-Armas adquiridas, munición, cantidades de consumibles, salud actual, duración de efectos y mejoras permanentes.
-
-**Datos que genera:**
-
-Cambios de equipamiento, consumo de objetos, modificaciones temporales de estadísticas y eventos de disparo.
-
-**Riesgos:**
-
-Pérdida de armas al cambiar de nivel, utilización repetida de objetos consumidos o conservación incorrecta de bonificaciones temporales.
-
-**Criterios de aceptación:**
-
-El blaster se obtiene únicamente mediante el evento establecido en el segundo nivel y permanece disponible después de adquirirlo.
-
-Los consumibles aplican correctamente sus efectos, respetan las condiciones de duración y no permanecen activos después de una muerte cuando corresponda eliminarlos.
-
----
+**Criterios de aceptación:** Arma obtenida exactamente una vez, guardada correctamente y nunca revendida; botiquín funcional; adrenalina expira a los 5 s; el +20% temporal desaparece después de agotarse o al morir; daño del blaster duplica solo tras la compra.
 
 ## Sistema 04 — Salud, daño y muerte
 
-**Objetivo:**
+**Objetivo:** Representar el estado vital y responder de forma coherente a ataques y riesgos.
 
-Gestionar los puntos de salud de Jack Veil, el daño recibido y las consecuencias de perder toda su vida.
+**Entradas:** Daño de enemigo, colisión con zona letal, curación, bonificaciones de salud y eventos de muerte.
 
-**Entradas:**
+**Procesamiento / reglas:** La salud disminuye al recibir daño válido y respeta los periodos de invulnerabilidad que correspondan. La reacción a impactos incluye daño, aturdimiento y animaciones. Al morir, Jack pierde una oportunidad, se muestra la derrota y reaparece desde un checkpoint o pasa a Game Over.
 
-Ataques enemigos, contacto con trampas, caídas en zonas peligrosas, objetos curativos y bonificaciones de salud.
+**Salidas:** Salud restante, animación de daño/muerte, HUD y solicitud de transición.
 
-**Procesamiento / reglas:**
+**Estados posibles:** Vivo, herido, invulnerable brevemente, aturdido, derrotado, esperando respawn / Game Over.
 
-El sistema administra la salud del jugador y disminuye los puntos disponibles cuando recibe daño válido.
+**Dependencias:** Salud, daño y reaparición, prefabs de jugador y sistema de oportunidades futuro.
 
-Jack dispone actualmente de una salud máxima base de 80 puntos en la configuración de Unity.
+**Interacciones:** Combate, consumibles, checkpoints, economía y guardado.
 
-Los impactos pueden producir animaciones de daño, aturdimiento o periodos breves de invulnerabilidad para evitar recibir múltiples golpes de manera inmediata.
+**Datos que necesita:** Salud base de 80 puntos, salud actual, bono temporal, oportunidades y último checkpoint.
 
-Cuando la salud llega a cero, se activa la secuencia de muerte.
+**Datos que genera:** Evento de daño/muerte, salud actual y estadísticas de derrotas.
 
-Según el flujo previsto del videojuego, el jugador pierde una oportunidad y debe acceder a la pantalla de derrota. Si conserva oportunidades disponibles, podrá reaparecer en el último checkpoint activado.
+**Riesgos:** Descontar dos veces la misma muerte, conservar el +20% después del respawn o reiniciar una escena incorrecta.
 
-En caso contrario, deberá regresar al menú principal.
-
-**Salidas:**
-
-Cambios en la salud, animaciones de daño, eventos de muerte y activación del sistema de derrota y reaparición.
-
-**Estados posibles:**
-
-Vivo, herido, invulnerable temporalmente, aturdido, muerto o esperando reaparición.
-
-**Dependencias:**
-
-Sistema de salud, daño, animaciones, oportunidades y checkpoints.
-
-**Interacciones:**
-
-Combate, consumibles, enemigos, trampas, guardado y progresión.
-
-**Datos que necesita:**
-
-Salud máxima, salud actual, cantidad de daño, protección temporal, oportunidades restantes y checkpoint activo.
-
-**Datos que genera:**
-
-Salud actualizada, eventos de daño, muerte, pérdida de oportunidades y estadísticas de derrotas.
-
-**Riesgos:**
-
-Daño duplicado, activación repetida de la muerte, reaparición incorrecta o permanencia de bonificaciones temporales después de morir.
-
-**Criterios de aceptación:**
-
-La salud disminuye correctamente al recibir daño y nunca permanece por debajo de cero.
-
-La muerte se activa una sola vez por evento y, cuando se implemente el sistema completo de oportunidades, el jugador reaparece correctamente o regresa al menú según corresponda.
-
----
+**Criterios de aceptación:** El daño se registra una sola vez por evento válido; zonas letales provocan muerte; respawn restaura salud normal y cancela buffs; el sistema de oportunidades y checkpoints mantiene una reaparición coherente.
 
 ## Sistema 05 — Inteligencia artificial de enemigos
 
-**Objetivo:**
+**Objetivo:** Crear enfrentamientos progresivamente más exigentes y bloquear zonas cuando sea necesario.
 
-Controlar el comportamiento de los enemigos para generar enfrentamientos dinámicos y desafíos progresivos.
+**Entradas:** Posición y proximidad de Jack, límites de terreno, estado del enemigo y daño recibido.
 
-**Entradas:**
+**Procesamiento / reglas:** Cada variante Sentinela emplea sus rutinas de detección y ataque. En el nivel 1 se utilizan Beta32 y Beta64; el nivel 2 incorpora además Alpha16 y KAR. La eliminación de determinados enemigos desbloquea el acceso industrial.
 
-Posición del jugador, distancia de detección, estado de cada enemigo, condiciones del escenario y daño recibido.
+**Salidas:** Movimiento, ataques, daño, eventos de muerte y posibles tuercas.
 
-**Procesamiento / reglas:**
+**Estados posibles:** Inactivo/patrullando (según variante), detectando, persiguiendo, atacando, reaccionando a daño y destruido.
 
-Cada enemigo utiliza un conjunto de comportamientos que determina cómo detecta, persigue y ataca a Jack.
+**Dependencias:** Arquetipos de Sentinela, colisiones y sistema de salud.
 
-Los enemigos pueden realizar diferentes acciones dependiendo de su tipo, distancia y estado.
+**Interacciones:** Combate del jugador, progreso de puertas, recompensas y adquisición del blaster.
 
-Actualmente, el proyecto utiliza cuatro variantes principales:
+**Datos que necesita:** Salud, alcance y tiempos de ataque configurados por prefab.
 
-- **Sentinela Beta32:** Enemigo básico de combate cercano.
-- **Sentinela Beta64:** Enemigo pesado con ataques físicos de mayor intensidad.
-- **Sentinela Alpha16:** Enemigo ágil con diferentes ataques y capacidad de aturdimiento.
-- **Sentinela KAR:** Robot que utiliza ataques eléctricos de área.
+**Datos que genera:** Daño a Jack, destrucción, notificación de muerte y drop de recursos.
 
-Cuando un enemigo pierde toda su salud, se destruye y puede generar recursos para el jugador.
+**Riesgos:** Enemigos fuera de alcance que bloqueen progresión, duplicación de drops o falta de entrega del blaster.
 
-Algunos enemigos también participan en el cumplimiento de objetivos, como desbloquear puertas o entregar el blaster al inicio del segundo nivel.
+**Criterios de aceptación:** Las cuatro variantes actúan de acuerdo con sus patrones; el enemigo obligatorio del nivel 2 entrega el blaster; las puertas reciben los eventos de muerte correctos.
 
-**Salidas:**
+## Sistema 06 — Interacciones, puertas y objetivos de nivel
 
-Movimiento enemigo, ataques, daño al jugador, animaciones, destrucción y generación de recompensas.
+**Objetivo:** Permitir que el jugador active mecanismos y cumpla condiciones de avance.
 
-**Estados posibles:**
+**Entradas:** Cercanía e interacción `E`, enemigos eliminados, tanques destruidos, nivel activo.
 
-Inactivo, patrullando, detectando, persiguiendo, atacando, recibiendo daño, aturdido o destruido, según las capacidades de cada variante.
+**Procesamiento / reglas:** El sistema identifica objetos interactivos cercanos. En el Nivel 1, la puerta industrial se habilita tras derrotar a dos enemigos específicos. En el Nivel 2, la estación de mejoras y el elevador permiten interacción contextual; la salida al Obelisco se desbloquea cuando los tres tanques industriales quedan destruidos.
 
-**Dependencias:**
+**Salidas:** Puertas abiertas, movimiento de elevador, UI de estación y carga de nueva escena.
 
-Sistema de movimiento enemigo, detección, combate, salud y animaciones.
+**Estados posibles:** Sin detectar, disponible, bloqueado, activado y transición de nivel.
 
-**Interacciones:**
+**Dependencias:** Detección de interacción, mecanismos, puertas, tanques y objetivos del escenario.
 
-Combate del jugador, recolección de recursos, objetivos de nivel y progresión.
+**Interacciones:** Combate, objetivos, escenarios y guardado.
 
-**Datos que necesita:**
+**Datos que necesita:** Enemigos obligatorios vivos, tanques restantes y escena siguiente.
 
-Posición del jugador, salud, velocidad, daño, rango de detección y tiempos de ataque.
+**Datos que genera:** Banderas de objetivo completo, animaciones, transición y desbloqueo de nivel.
 
-**Datos que genera:**
+**Riesgos:** Puerta atascada al perder referencias, escenario 3 inexistente o transiciones múltiples.
 
-Acciones enemigas, daño producido, eventos de eliminación y recursos disponibles.
+**Criterios de aceptación:** La puerta del nivel 1 se abre al destruir los enemigos asignados; la del nivel 2 exige exactamente tres tanques; la salida conduce al escenario correspondiente.
 
-**Riesgos:**
+## Sistema 07 — Economía y máquina de mejoras
 
-Enemigos que no detectan correctamente al jugador, comportamientos repetitivos, ataques imposibles de evitar o bloqueos de progreso.
+**Objetivo:** Vincular derrotas y exploración con mejoras comprensibles.
 
-**Criterios de aceptación:**
+**Entradas:** Tuercas recogidas, apertura de estación, selección y confirmación de compra.
 
-Cada enemigo ejecuta sus comportamientos conforme a sus características y responde correctamente a la presencia, ataques y movimientos del jugador.
+**Procesamiento / reglas:** Los enemigos pueden soltar tuercas; el saldo de tuercas se registra y la estación verifica los requisitos de compra. El catálogo contiene **dos mejoras, con un nivel cada una**. La mejora del blaster requiere que el arma haya sido obtenida. El precio de cada mejora corresponde al costo indicado por la estación.
 
-Las eliminaciones necesarias para completar objetivos deben registrarse correctamente.
+**Salidas:** Recursos descontados, mejora persistente y HUD actualizado.
 
----
+**Estados posibles:** Recurso insuficiente, compra disponible, compra efectuada, mejora al máximo, mejora bloqueada.
 
-## Sistema 06 — Interacción y objetivos del escenario
+**Dependencias:** Recolección de tuercas, estadísticas, estación de mejoras y registro del progreso.
 
-**Objetivo:**
+**Interacciones:** Enemigos, estadísticas, guardado, combate y movilidad.
 
-Permitir que Jack Veil interactúe con elementos del entorno y complete las condiciones necesarias para avanzar por los niveles.
+**Datos que necesita:** Saldo, precios, posesión del blaster y estados de compra.
 
-**Entradas:**
+**Datos que genera:** Balance de recursos y banderas permanentes de actualización.
 
-Comandos de interacción, cercanía a mecanismos, enemigos eliminados y objetos destructibles.
+**Riesgos:** Que se permitan compras no autorizadas; que morir revierta mejoras adquiridas; precios imposibles.
 
-**Procesamiento / reglas:**
+**Criterios de aceptación:** Solo se muestran las dos mejoras; cada una puede comprarse una vez; los multiplicadores se aplican de forma exacta sobre sus valores base; el saldo no puede ser negativo.
 
-El jugador puede interactuar con determinados objetos del escenario cuando se encuentra dentro de su área de activación.
+## Sistema 08 — Checkpoints, oportunidades y reaparición
 
-Los mecanismos pueden incluir puertas, elevadores, terminales y estaciones de mejora.
+**Objetivo:** Administrar el ciclo derrota → oportunidad restante → reaparición o Game Over del videojuego.
 
-Algunos requieren cumplir condiciones específicas antes de activarse.
+**Entradas:** Activar checkpoint, daño letal, cantidad actual de oportunidades y progreso guardado.
 
-En el primer nivel, la puerta industrial permanece bloqueada hasta eliminar los enemigos establecidos.
+**Procesamiento / reglas:** Un checkpoint registra escena y posición. Al morir, el juego descuenta **una** oportunidad; si queda alguna, muestra derrota y reaparece en el último checkpoint. Si no quedan, pasa a Game Over y habilita retorno al menú. El número inicial de oportunidades se establece para la partida y se descuenta según las reglas de derrota.
 
-En el segundo nivel, el jugador debe destruir los tres tanques de gas para desbloquear la salida hacia el Obelisco.
+**Salidas:** Pantalla de derrota, oportunidades actualizadas, posición de reaparición, Game Over.
 
-**Salidas:**
+**Estados posibles:** Sin checkpoint, checkpoint activo, jugando, derrotado, respawning y sin oportunidades.
 
-Apertura de puertas, activación de elevadores, acceso a estaciones, actualización de objetivos y transiciones de nivel.
+**Dependencias:** Salud, muerte, gestión de niveles, datos de guardado e interfaz.
 
-**Estados posibles:**
+**Interacciones:** Guardado, inventario, salud, consumibles y progreso de misión.
 
-Inactivo, disponible, bloqueado, activado, completado o en transición.
+**Datos que necesita:** Escena, checkpoint activo, oportunidades, estado de mejoras y objetos temporales.
 
-**Dependencias:**
+**Datos que genera:** Nuevo estado vital, contador y reaparición.
 
-Detección de interacciones, objetos del escenario, combate, eventos de destrucción y gestión de niveles.
+**Riesgos:** Doble descuento, teletransportación al checkpoint incorrecto o inconsistencias al cerrar el juego.
 
-**Interacciones:**
+**Criterios de aceptación:** Una muerte descuenta solo una oportunidad; siempre respawnea en checkpoint válido cuando queden oportunidades; con cero oportunidades no respawnea automáticamente; los buffs temporales se eliminan.
 
-Exploración, enemigos, objetos destructibles, máquina de mejoras y guardado.
+## Sistema 09 — Guardado, carga y continuidad (JSON)
 
-**Datos que necesita:**
+**Objetivo:** Recuperar el avance del jugador al seleccionar **Continuar partida** y registrar la conclusión de la aventura.
 
-Posición del jugador, condiciones de activación, enemigos restantes, objetos destruidos y nivel actual.
+**Entradas:** Inicio de partida nueva, activación de checkpoint, cambio de nivel, compra, muerte y victoria.
 
-**Datos que genera:**
+**Procesamiento / reglas:** El sistema serializa en JSON el progreso del jugador, incluyendo nivel, checkpoint, oportunidades, armamento, mejoras, recursos, objetivos y estadísticas. «Nueva partida» establece un estado limpio y «Continuar partida» restaura el último guardado válido.
 
-Eventos de activación, objetivos completados, mecanismos desbloqueados y solicitudes de cambio de escenario.
+**Salidas:** Partida restaurada, datos guardados, estado de menú «Continuar» habilitado/deshabilitado y estadísticas finales.
 
-**Riesgos:**
+**Estados posibles:** Sin partida, partida válida, guardando, cargando, partida terminada, guardado inválido.
 
-Puertas que no reconocen objetivos completados, mecanismos activados anticipadamente o transiciones repetidas.
+**Dependencias:** Progresión, serialización JSON, gestión de escenas, checkpoints y menú principal.
 
-**Criterios de aceptación:**
+**Interacciones:** Compras, recursos, inventario, desbloqueos, muerte, niveles y créditos.
 
-Los mecanismos responden únicamente cuando se cumplen sus requisitos.
+**Datos que necesita:** `saveVersion`, escena, checkpoint, oportunidades, `hasBlaster`, mejoras, recursos, consumibles, objetivos completados, tiempo, muertes y enemigos derrotados. Los campos forman parte del registro de progreso.
 
-Las puertas permiten avanzar después de completar los objetivos correspondientes y comunican visualmente su estado al jugador.
+**Datos que genera:** JSON de progreso y estadísticas, marcas de actualización y estado de partida.
 
----
+**Riesgos:** Archivos corruptos, reinicio incompleto en «Nueva partida», persistencia de buffs temporales no deseada, incoherencia entre formatos.
 
-## Sistema 07 — Economía y mejoras
+**Criterios de aceptación:** «Nueva partida» crea estado inicial limpio tras confirmación; «Continuar» restaura un estado válido; el guardado conserva adquisiciones permanentes; la victoria registra estadísticas y permite mostrar créditos.
 
-**Objetivo:**
+## Sistema 10 — Interfaz, menús y flujo de escenas
 
-Administrar los recursos recolectados y permitir que el jugador los utilice para mejorar permanentemente las capacidades de Jack.
+**Objetivo:** Informar al jugador y enlazar las pantallas y las rutas de navegación.
 
-**Entradas:**
+**Entradas:** Selección de menú, interacción, salud/recursos, eventos de muerte, finalización de nivel y victoria.
 
-Recolección de tuercas, interacción con la máquina de mejoras y selección de actualizaciones.
+**Procesamiento / reglas:** HUD muestra salud, energía y arsenal cuando corresponde. En estación, la UI permite elegir y comprar mejoras y suspende el tiempo durante su uso. El menú principal, la presentación de Jack, la pantalla de derrota, las oportunidades, el Game Over y los créditos componen la navegación del videojuego.
 
-**Procesamiento / reglas:**
+**Salidas:** Mensajes de estado, HUD, interfaces, menús y transiciones.
 
-Los enemigos pueden dejar caer tuercas que el jugador recolecta durante su recorrido.
+**Estados posibles:** Menú principal, carga, jugando, estación abierta, pausa, derrota, Game Over, victoria y créditos.
 
-Estas funcionan como recurso de intercambio dentro de la máquina de mejoras.
+**Dependencias:** Controles, interfaz de estación, HUD, gestor de escenas y persistencia.
 
-La versión final contempla únicamente dos actualizaciones:
+**Interacciones:** Todos los sistemas jugables y guardado.
 
-**1. Actualización a prótesis de combate**
+**Datos que necesita:** Salud, energía, munición, oportunidades, recursos, objetivos y partida existente.
 
-- Velocidad de movimiento: ×1.3.
-- Capacidad de salto: ×1.3.
-- Daño físico: ×1.5.
+**Datos que genera:** Selecciones, eventos de pantalla y solicitudes de carga.
 
-**2. Incremento ilegal de blaster**
+**Riesgos:** Interfaces que ocultan acciones; falta de opción para salir/cargar; pausa sin restaurar el tiempo; botones que cargan escenas inexistentes.
 
-- Daño del blaster: ×2.
-
-Cada mejora podrá adquirirse una sola vez.
-
-El sistema comprueba que Jack tenga los recursos suficientes y cumpla los requisitos correspondientes antes de completar la compra.
-
-**Salidas:**
-
-Descuento de recursos, aplicación de mejoras, actualización de estadísticas y cambios en la interfaz.
-
-**Estados posibles:**
-
-Disponible, bloqueado, recursos insuficientes, adquirido o mejora completada.
-
-**Dependencias:**
-
-Recolección de tuercas, estadísticas del jugador, máquina de mejoras, interfaz y guardado.
-
-**Interacciones:**
-
-Combate, movilidad, blaster, progresión y persistencia del personaje.
-
-**Datos que necesita:**
-
-Cantidad de tuercas, costos de las mejoras, estadísticas originales, armas adquiridas y mejoras previamente compradas.
-
-**Datos que genera:**
-
-Nuevo saldo de recursos, estadísticas actualizadas y registro permanente de mejoras.
-
-**Riesgos:**
-
-Aplicar bonificaciones varias veces, permitir compras sin recursos suficientes o perder mejoras después de cargar una partida.
-
-**Criterios de aceptación:**
-
-La máquina presenta únicamente las dos mejoras establecidas y permite adquirirlas una vez cada una.
-
-Los valores se actualizan correctamente y permanecen disponibles durante el resto de la partida.
-
----
-
-## Sistema 08 — Checkpoints y oportunidades
-
-**Objetivo:**
-
-Administrar los puntos de reaparición y las oportunidades disponibles cuando Jack pierde toda su salud.
-
-**Entradas:**
-
-Activación de checkpoints, eventos de muerte, oportunidades restantes y progreso del nivel.
-
-**Procesamiento / reglas:**
-
-Los checkpoints registran puntos específicos del escenario que pueden utilizarse para reaparecer.
-
-Cuando Jack muere, el sistema disminuye una oportunidad y muestra la pantalla de derrota.
-
-Si todavía dispone de oportunidades, puede reaparecer en el último checkpoint activado.
-
-Cuando las oportunidades se agotan, la partida entra en estado de Game Over y el jugador debe regresar al menú principal.
-
-La cantidad inicial de oportunidades y su posible recuperación permanecen pendientes de definir.
-
-**Salidas:**
-
-Actualización del contador de oportunidades, activación de pantalla de derrota, reaparición o Game Over.
-
-**Estados posibles:**
-
-Sin checkpoint, checkpoint activado, jugando, derrotado, reapareciendo o sin oportunidades.
-
-**Dependencias:**
-
-Salud, muerte, escenas, guardado e interfaz.
-
-**Interacciones:**
-
-Progresión, consumibles, combate y navegación.
-
-**Datos que necesita:**
-
-Nivel actual, último checkpoint, posición de reaparición y oportunidades restantes.
-
-**Datos que genera:**
-
-Contador actualizado, punto de reaparición y estado de continuación o derrota definitiva.
-
-**Riesgos:**
-
-Descontar varias oportunidades por una sola muerte, registrar checkpoints incorrectos o reaparecer dentro de obstáculos.
-
-**Criterios de aceptación:**
-
-Cada muerte descuenta exactamente una oportunidad.
-
-Mientras existan oportunidades, el personaje reaparece correctamente. Cuando se agotan, el jugador no puede continuar inmediatamente y debe regresar al menú principal.
-
-*Estado: Sistema previsto en el flujo de juego. Su implementación definitiva permanece pendiente.*
-
----
-
-## Sistema 09 — Guardado y carga de partida
-
-**Objetivo:**
-
-Conservar el progreso del jugador y permitir que continúe una partida previamente iniciada.
-
-**Entradas:**
-
-Nueva partida, selección de continuar, activación de checkpoints, cambio de nivel, adquisición de mejoras y finalización del videojuego.
-
-**Procesamiento / reglas:**
-
-El sistema registra la información necesaria para restaurar la partida posteriormente.
-
-El diseño contempla el almacenamiento de datos mediante serialización JSON.
-
-Actualmente, Unity utiliza una estructura serializada como JSON dentro de PlayerPrefs para almacenar parte de los recursos y mejoras. Este sistema deberá ampliarse para incluir el progreso completo de la aventura.
-
-La información prevista comprende:
-
-- Nivel actual.
-- Checkpoint activado.
-- Oportunidades restantes.
-- Armas adquiridas.
-- Mejoras permanentes.
-- Recursos disponibles.
-- Consumibles conservados.
-- Objetivos completados.
-- Estadísticas de la partida.
-
-Al seleccionar Nueva partida, se debe establecer un estado inicial limpio.
-
-Al seleccionar Continuar partida, se recupera el último progreso guardado válido.
-
-**Salidas:**
-
-Datos guardados, restauración del progreso y habilitación de la opción Continuar partida.
-
-**Estados posibles:**
-
-Sin partida guardada, partida disponible, guardando, cargando, partida completada o guardado inválido.
-
-**Dependencias:**
-
-Serialización JSON, administración de escenas, progresión, checkpoints e inventario.
-
-**Interacciones:**
-
-Menú principal, recursos, mejoras, muerte, desbloqueos y victoria.
-
-**Datos que necesita:**
-
-Estado del jugador, nivel, checkpoint, inventario, estadísticas y progresión de objetivos.
-
-**Datos que genera:**
-
-Información persistente de partida, registros de progreso y estadísticas finales.
-
-**Riesgos:**
-
-Pérdida de información, archivos dañados, recuperación incorrecta de objetos o conservación de efectos temporales después de reaparecer.
-
-**Criterios de aceptación:**
-
-El progreso se conserva correctamente entre sesiones y permite restaurar una partida desde un estado válido.
-
-Las mejoras permanentes y armas adquiridas deben mantenerse, mientras que los efectos temporales deben eliminarse cuando corresponda.
-
----
-
-## Sistema 10 — Interfaz y navegación
-
-**Objetivo:**
-
-Administrar las pantallas del videojuego y proporcionar al jugador información clara sobre su estado y las acciones disponibles.
-
-**Entradas:**
-
-Selecciones del menú, comandos del jugador, cambios de salud, recolección de recursos, eventos de derrota y cumplimiento de objetivos.
-
-**Procesamiento / reglas:**
-
-El sistema muestra la información correspondiente al estado actual del videojuego.
-
-Durante la partida, la interfaz permite consultar elementos como salud, energía, munición y recursos disponibles.
-
-También administra las pantallas y transiciones definidas en el flujo de navegación:
-
-- Menú principal.
-- Nueva partida.
-- Continuar partida.
-- Presentación inicial de Jack, pendiente de definir.
-- Interfaz de juego.
-- Máquina de mejoras.
-- Pantalla de derrota.
-- Game Over.
-- Pantalla de victoria.
-- Créditos.
-
-La presentación inicial no incluye la antigua secuencia del ataque, hospital o conversación con el Tecnócrata.
-
-**Salidas:**
-
-Pantallas, indicadores, notificaciones, mensajes de interacción y transiciones entre estados.
-
-**Estados posibles:**
-
-Menú principal, carga, jugando, interfaz de mejoras, pausa, derrota, Game Over, victoria o créditos.
-
-**Dependencias:**
-
-Sistema de controles, HUD, progreso, guardado, salud y administración de escenas.
-
-**Interacciones:**
-
-Todos los sistemas principales del videojuego.
-
-**Datos que necesita:**
-
-Salud, energía, recursos, munición, objetivos, oportunidades y estado de la partida.
-
-**Datos que genera:**
-
-Solicitudes de navegación, selecciones del jugador y cambios de estado de interfaz.
-
-**Riesgos:**
-
-Información incorrecta, botones sin respuesta, transiciones duplicadas o acciones del jugador que continúan ejecutándose mientras una pantalla bloqueante está abierta.
-
-**Criterios de aceptación:**
-
-Cada pantalla presenta la información correspondiente y permite realizar las acciones establecidas.
-
-Las transiciones respetan el flujo de navegación y las opciones que requieren condiciones previas solo se habilitan cuando estas se cumplen.
-
----
+**Criterios de aceptación:** Cada pantalla respeta las transiciones establecidas entre estados; durante derrota y menús el jugador no puede seguir atacando; «Continuar» solo se activa con partida válida; «Volver al menú» no genera pérdidas accidentales.
 
 ## Sistema 11 — Progresión de niveles y victoria final
 
-**Objetivo:**
+**Objetivo:** Coordinar la secuencia de los tres niveles y sus condiciones de salida, culminando en la victoria contra Lucius Corr.
 
-Coordinar el avance del jugador a través de los tres niveles de Vaporlock, administrando los objetivos necesarios para completar la aventura.
+**Entradas:** Selección de nueva partida o continuar, eventos de objetivos completados, transiciones de puertas, derrota de Lucius y datos de progreso.
 
-**Entradas:**
+**Procesamiento / reglas:** El flujo comienza con el menú principal y una presentación de Jack, seguida del **Nivel 1 — Tejados de Metronia**. Para salir del Nivel 1 deben derrotarse los dos enemigos asociados a la puerta industrial; en el **Nivel 2 — Distrito Industrial** se obtiene el blaster del primer enemigo  y deben destruirse los tres tanques de gas para habilitar la salida. En el **Nivel 3 — El Obelisco**, el desafío final consiste en derrotar a Lucius Corr, registrar el resultado y mostrar victoria y créditos.
 
-Inicio o recuperación de partida, cumplimiento de misiones, eliminación de enemigos, destrucción de objetivos y derrota del jefe final.
+**Salidas:** Cambio de escena, actualización de misión, nuevos desbloqueos y estado de victoria al finalizar el Nivel 3.
 
-**Procesamiento / reglas:**
+**Estados posibles:** Nivel bloqueado, iniciado, en progreso, objetivo cumplido, salida disponible, completado y victoria final.
 
-El videojuego se divide en tres niveles principales.
+**Dependencias:** Puertas, tanques, gestión de escenas, guardado, jefe final y créditos.
 
-**Nivel 1 — Tejados de Metronia:**
+**Interacciones:** IA enemiga, combate, objetos destructibles, desbloqueo del blaster, economía, checkpoints, guardado e interfaz.
 
-Jack comienza su recorrido y utiliza sus habilidades de movimiento y combate cuerpo a cuerpo para atravesar los tejados.
+**Datos que necesita:** Nivel actual, enemigos obligatorios eliminados, cantidad de tanques destruidos, posesión del blaster, estado del jefe y progreso guardado.
 
-El jugador debe superar los obstáculos y eliminar los enemigos necesarios para desbloquear la entrada al Distrito Industrial.
+**Datos que genera:** Marcadores de misión, nivel completado, escena siguiente desbloqueada, estadísticas y condición de victoria.
 
-**Nivel 2 — Distrito Industrial:**
+**Riesgos:** Abrir salidas sin completar objetivos; perder progresión entre niveles; intentar cargar una escena inválida; activar créditos sin derrotar al jefe.
 
-Jack obtiene el blaster después de derrotar al primer enemigo del nivel.
-
-Durante el recorrido, debe superar enemigos, utilizar mecanismos industriales y destruir los tres tanques de gas necesarios para desbloquear la salida hacia el Obelisco.
-
-También puede utilizar la máquina de mejoras para fortalecer sus capacidades.
-
-**Nivel 3 — El Obelisco:**
-
-El jugador debe superar los obstáculos y enemigos del escenario final hasta llegar al enfrentamiento contra Lucius Corr.
-
-Al derrotar al jefe, el sistema registra la victoria, guarda el progreso y las estadísticas correspondientes y presenta la pantalla final con los créditos.
-
-Este tercer nivel permanece pendiente de implementación en Unity.
-
-**Salidas:**
-
-Actualización de objetivos, cambios de nivel, desbloqueo de escenarios, registro de victoria y activación de créditos.
-
-**Estados posibles:**
-
-Nivel bloqueado, disponible, iniciado, en progreso, objetivo completado, nivel finalizado o victoria definitiva.
-
-**Dependencias:**
-
-Gestión de escenas, combate, enemigos, puertas, objetivos, jefe final, guardado e interfaz.
-
-**Interacciones:**
-
-Movimiento, combate, mejoras, recolección, guardado, checkpoints y navegación.
-
-**Datos que necesita:**
-
-Nivel actual, objetivos completados, enemigos obligatorios eliminados, tanques destruidos y estado del jefe final.
-
-**Datos que genera:**
-
-Progreso de la aventura, niveles completados, desbloqueos y estadísticas finales.
-
-**Riesgos:**
-
-Permitir transiciones sin completar los objetivos, perder información entre niveles o activar el final antes de derrotar a Lucius Corr.
-
-**Criterios de aceptación:**
-
-Cada nivel permite avanzar únicamente después de cumplir sus condiciones de salida.
-
-La victoria definitiva se registra solamente después de derrotar al jefe final y completar los requisitos establecidos.
+**Criterios de aceptación:** Nivel 1 transfiere al Nivel 2 después de desbloquear su puerta; Nivel 2 habilita salida únicamente tras destruir los tres tanques; el blaster se obtiene de su enemigo asignado; Nivel 3 termina tras derrotar a Lucius y muestra victoria y créditos. 
 
 ## Relaciones entre sistemas
 
-Los sistemas de Vaporlock funcionan de manera interdependiente, intercambiando información para mantener la continuidad de las acciones del jugador y el desarrollo de los niveles.
+```text
+Controles → Movimiento ───────┐
+         ├→ Combate físico ─────┼→ Daño y salud → Muerte → Oportunidades → Checkpoint
+         ├→ Blaster/consumibles ┤                          │                     │
+         └→ Interacciones ──────┘                          └────→ Guardado ←─────┤
+                    │                                            ↑               │
+Enemigos → Drops → Tuercas → Máquina de mejoras ────────────────┤               │
+                    │                                            │               │
+Enemigos / tanques → Objetivos → Puertas → Niveles ──────────────┘               │
+                                             │                                   │
+                                      Jefe final → Victoria → Créditos           │
+                                             ↑                                   │
+                                        Menú / Continuar ←────────────────────────┘
+```
 
-El **sistema de controles** comunica las acciones del jugador a los sistemas de movimiento, combate e interacción.
+Los datos de **economía, mejoras, posesión del blaster y progreso** se deben compartir con el guardado. Los **efectos temporales** (adrenalina y carbón activado) deben gestionarse por separado para que no reaparezcan incorrectamente después de una muerte. Las oportunidades y checkpoints regulan la continuidad de la partida.
 
-El **sistema de combate** se relaciona directamente con la salud y la inteligencia artificial de los enemigos, mientras que las derrotas permiten generar recursos utilizados por el sistema de economía.
-
-El **sistema de economía y mejoras** modifica las estadísticas del personaje, afectando directamente su movilidad y capacidad de combate.
-
-El **sistema de interacción** se comunica con los objetivos de cada nivel para activar mecanismos, desbloquear puertas y permitir nuevas transiciones.
-
-Por su parte, los sistemas de **salud, checkpoints y oportunidades** administran las consecuencias de la muerte del personaje.
-
-Finalmente, el **sistema de guardado** recopila la información permanente de los demás sistemas para conservar el progreso del jugador, mientras que la interfaz representa visualmente los acontecimientos importantes.
-
-**Flujo general de relaciones:**
-
-`Controles → Movimiento / Combate / Interacción → Enemigos y objetivos → Recursos y mejoras → Progresión de niveles → Guardado → Victoria`
-
-**Flujo de derrota:**
-
-`Daño recibido → Salud llega a cero → Muerte → Pérdida de oportunidad → Checkpoint o Game Over`
-
-**Flujo de mejoras:**
-
-`Derrotar enemigos → Recolectar tuercas → Máquina de mejoras → Actualizar estadísticas → Continuar aventura`
-
----
-
-**Navegación:** [[00 - Índice]] · ← [[02 - Mecánicas]] · [[04 - Controles]] →
+> **Navegación:** [[00 - Índice]] · ← [[02 - Mecánicas]] · [[04 - Controles]] →

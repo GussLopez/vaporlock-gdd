@@ -1,205 +1,81 @@
-06 - Economia y Recursos
-
 # Economía y Recursos
 
 ## Descripción de la sección
 
-La economía de **Vaporlock** comprende los recursos que Jack Veil puede obtener, utilizar y administrar durante su recorrido por Metronia. Estos recursos permiten recuperar salud, ejecutar habilidades especiales, utilizar armas y adquirir mejoras que facilitan la superación de los desafíos del videojuego.
+La economía de **Vaporlock** organiza los recursos que Jack Veil obtiene, consume y conserva durante su recorrido por Metronia. Su propósito es apoyar el combate y la exploración sin convertir la recolección en una obligación que interrumpa el ritmo del videojuego.
 
-El sistema utiliza principalmente **tuercas** como recurso de intercambio, las cuales pueden obtenerse al derrotar enemigos y utilizarse en la máquina de mejoras.
+Las **tuercas** funcionan como recurso de intercambio en la máquina de mejoras. La **salud**, la **energía de combate**, la **munición**, los **consumibles** y las **oportunidades** determinan cuánto puede resistir o actuar el jugador y qué consecuencias tiene cometer errores. No se contempla un sistema de experiencia o niveles de personaje.
 
-Además, el videojuego contempla otros recursos como la salud, energía de combate, munición, consumibles y oportunidades, los cuales influyen directamente en la supervivencia y progresión del jugador.
-
-La administración de estos elementos busca fomentar la exploración, el combate estratégico y el aprovechamiento de los recursos disponibles, sin convertir su recolección en una actividad obligatoria que interrumpa el desarrollo de la aventura.
+Los recursos se obtienen y consumen mediante reglas consistentes, y las mejoras permanentes conservan sus efectos a lo largo de la partida.
 
 ## Recursos
 
 | Recurso | Obtención | Uso | Límite | Pérdida |
 |---|---|---|---|---|
-| Tuercas | Derrotar enemigos y recoger sus recompensas. | Comprar mejoras permanentes. | Por definir. | Al comprar mejoras o morir, según el sistema de recuperación. |
-| Salud | Salud inicial, reaparición y botiquines. | Resistir ataques y peligros. | 80 HP base actualmente. | Al recibir daño. |
-| Energía | Conectar determinados ataques físicos. | Ejecutar RayPunch. | Por definir. | Al utilizar el ataque especial. |
-| Munición | Disponible con el blaster; fuentes de recarga por confirmar. | Disparar proyectiles. | Por definir. | Al disparar. |
-| Botiquín | Recolección en el escenario. | Recuperar salud. | Por definir. | Al utilizarlo. |
-| Inyección de adrenalina | Recolección en el escenario. | Aumentar velocidad y salto durante 5 segundos. | Por definir. | Al utilizarla. |
-| Inyección de carbón activado | Recolección en el escenario. | Incrementar temporalmente la salud máxima en un 20%. | Por definir. | Al utilizarla. |
-| Oportunidades | Disponibles al iniciar o recuperar una partida. | Permitir reaparecer después de morir. | Por definir. | Se pierde una por muerte. |
+| **Tuercas** | Recompensas soltadas por determinados enemigos; recuperación de la bolsa tras morir. | Comprar las dos mejoras de la máquina. | Según el límite de recursos del personaje. | Se descuentan al comprar; pueden caer en una bolsa recuperable al morir. |
+| **Salud** | Salud inicial o reaparición; recuperación mediante botiquín. | Resistir daño de enemigos, trampas y peligros. | **80 HP base**. | Disminuye por daño; llegar a cero provoca la muerte. |
+| **Energía de combate** | Se acumula al conectar determinados ataques físicos. | Ejecutar el ataque especial RayPunch. | Según el medidor máximo de energía. | Se consume al utilizar el ataque especial. |
+| **Munición del blaster** | Mediante el blaster y su sistema de recarga. | Realizar disparos a distancia. | Capacidad de cargador y reserva por confirmar. | Disminuye al disparar; el arma utiliza recarga. |
+| **Botiquín** | Recolección en puntos del escenario. | Recuperar puntos de salud. | Cantidad transportable por definir. | Se consume al utilizarse. |
+| **Inyección de adrenalina** | Recolección en puntos del escenario. | Aumentar temporalmente velocidad y salto. | Cantidad transportable por definir; efecto de **5 segundos**. | Se consume al utilizarse; el efecto termina al agotarse su duración. |
+| **Inyección de carbón activado** | Recolección en puntos del escenario. | Otorgar salud adicional temporal equivalente al **20% de la salud máxima base**. | Cantidad transportable por definir; una aplicación proporciona **16 HP adicionales** con 80 HP de salud base. | Se consume al utilizarse; la bonificación se agota con el daño o desaparece al morir. |
+| **Oportunidades** | Se asignan al iniciar o recuperar una partida; cantidad inicial por definir. | Permitir reaparecer en un checkpoint tras una derrota. | Cantidad inicial y máxima por definir. | Se pierde **una oportunidad por muerte**. |
 
 ## Fuentes y sumideros
 
-### Fuentes
+**Fuentes:** Son las acciones o situaciones mediante las que el jugador obtiene recursos.
 
-Las fuentes representan las acciones mediante las cuales el jugador obtiene recursos durante la aventura.
+- **Derrotar enemigos:** algunos enemigos dejan caer tuercas, que pueden recogerse y acumularse.
+- **Recuperar una bolsa de tuercas:** Jack recupera los recursos perdidos al regresar al lugar donde murió.
+- **Conectar ataques físicos:** determinados impactos permiten recargar la energía usada por RayPunch.
+- **Recoger objetos:** los botiquines y las dos inyecciones se encuentran en puntos de recolección del escenario.
+- **Obtener el blaster:** al derrotar al primer enemigo del Nivel 2, este suelta la pistola. Es un desbloqueo permanente de equipo, no una compra con tuercas.
+- **Restaurar la salud:** el botiquín permite recuperar salud perdida, dentro del límite correspondiente.
 
-**Derrotar enemigos:** Algunos enemigos pueden dejar caer tuercas al ser eliminados. Estas pueden recogerse y acumularse para adquirir mejoras.
+**Sumideros:** Son las acciones o acontecimientos que consumen o reducen recursos.
 
-**Recolectar objetos:** Durante la exploración, el jugador podrá encontrar botiquines e inyecciones que proporcionan beneficios de recuperación o fortalecimiento temporal.
-
-**Recuperar recursos:** El proyecto actual permite recuperar las tuercas perdidas al morir mediante una bolsa que permanece en el lugar de la derrota.
-
-**Generar energía:** Determinados ataques cuerpo a cuerpo permiten recuperar energía que posteriormente puede utilizarse para ejecutar RayPunch.
-
-**Obtener equipamiento:** Al comenzar el segundo nivel, el primer enemigo derrotado deja caer el blaster. Una vez recogido, pasa a formar parte permanente del equipamiento de Jack.
-
-### Sumideros
-
-Los sumideros representan las acciones o acontecimientos que consumen recursos.
-
-**Máquina de mejoras:** El jugador utiliza tuercas para adquirir la actualización a prótesis de combate o el incremento ilegal de blaster.
-
-**Combate:** Los ataques especiales consumen energía y los disparos utilizan munición.
-
-**Daño recibido:** Los ataques enemigos y peligros del escenario disminuyen la salud de Jack.
-
-**Uso de consumibles:** Los botiquines y las inyecciones se consumen al utilizarse.
-
-**Muerte:** Al perder toda su salud, Jack pierde una oportunidad y los efectos temporales activos. El sistema actual también contempla la pérdida recuperable de tuercas.
+- **Comprar mejoras:** la máquina descuenta tuercas al adquirir la actualización de prótesis de combate o el incremento ilegal de blaster.
+- **Recibir daño:** los ataques enemigos y peligros reducen la salud o consumen primero los puntos adicionales del carbón activado.
+- **Usar RayPunch:** gasta energía de combate.
+- **Disparar el blaster:** consume munición al disparar.
+- **Utilizar consumibles:** el botiquín y las inyecciones se retiran de la cantidad disponible después de usarse.
+- **Morir:** termina los efectos temporales, descuenta una oportunidad y activa las reglas de pérdida o recuperación de tuercas.
 
 ## Reglas
 
-### Administración de tuercas
+**1. Moneda y compras.** Las tuercas son la unidad de intercambio. La máquina de mejoras ofrece únicamente dos compras permanentes, de un nivel cada una: **Actualización a prótesis de combate** (velocidad ×1.3, capacidad de salto ×1.3 y daño físico ×1.5) e **Incremento ilegal de blaster** (daño del blaster ×2). No pueden volver a comprarse una vez adquiridas. Cada compra exige su costo en tuercas y no puede realizarse si los recursos son insuficientes. La mejora del blaster requiere haber obtenido el arma.
 
-Las tuercas constituyen la unidad de intercambio principal de Vaporlock.
+**2. Salud.** La salud máxima base de Jack es de **80 HP**. El daño reduce la salud actual; al llegar a cero se produce la muerte. El botiquín recupera salud sin exceder el máximo normal. La cantidad recuperada corresponde al valor de curación del botiquín.
 
-El jugador puede obtenerlas al derrotar determinados enemigos y utilizarlas en la máquina de mejoras, ubicada en el Distrito Industrial.
+**3. Carbón activado.** La inyección concede una reserva temporal equivalente al **20% de la salud máxima base**. Con 80 HP base, Jack puede alcanzar **96 HP**, de los cuales **16 HP corresponden a la bonificación**. El daño consume primero esta reserva; al agotarse, la salud vuelve a funcionar con el máximo normal de 80 HP. Si el daño supera la reserva restante, el excedente afecta a la salud normal. El beneficio desaparece al morir y no se restaura automáticamente mediante botiquines. El refuerzo no se multiplica al utilizar varias inyecciones simultáneamente.
 
-La máquina cuenta únicamente con dos actualizaciones:
+**4. Adrenalina.** Aumenta temporalmente la velocidad y la capacidad de salto durante **5 segundos**. El incremento se aplica sobre los valores de movimiento y salto vigentes. Su efecto no es una mejora permanente y debe terminar al finalizar el tiempo o cuando la muerte interrumpe la partida. Una segunda aplicación no acumula el aumento mientras el efecto está activo.
 
-**1. Actualización a prótesis de combate**
+**5. Energía de combate.** Se obtiene mediante determinados impactos físicos y se utiliza para RayPunch. Si la energía es insuficiente, el ataque no puede ejecutarse. La cantidad disponible y el costo de RayPunch se reflejan en el medidor de energía.
 
-- Velocidad de movimiento: ×1.3 (+30%).
-- Capacidad de salto: ×1.3 (+30%).
-- Daño físico: ×1.5 (+50%).
+**6. Munición.** El blaster queda disponible permanentemente después de recogerlo al comienzo del Nivel 2. Sus disparos consumen munición y el arma utiliza un sistema de cargadores y recarga. La mejora de daño ×2 no debe alterar por sí sola la cantidad de munición.
 
-**2. Incremento ilegal de blaster**
+**7. Recolección y pérdida de tuercas.** Los recursos recolectados incrementan el saldo del jugador. Al morir, las tuercas no gastadas quedan en una bolsa recuperable en el lugar de la derrota. El jugador puede volver al punto para recogerlas mientras continúe la partida.
 
-- Daño del blaster: ×2 (+100%).
+**8. Oportunidades y reaparición.** Cada muerte descuenta una oportunidad. Mientras queden oportunidades, Jack reaparece en el último checkpoint activado; al agotarlas, se dirige al menú principal.
 
-Cada mejora puede adquirirse una sola vez y mantiene sus beneficios durante el resto de la partida.
+**9. Persistencia.** El guardado de partida debe conservar el nivel, el checkpoint, las oportunidades, las tuercas, el blaster obtenido y las mejoras permanentes. El guardado también registra la munición y los consumibles conservados. Los efectos temporales de adrenalina y carbón activado no deben conservarse después de la muerte. El progreso se registra mediante datos JSON.
 
-Las mejoras requieren una cantidad determinada de tuercas. Sus costos definitivos todavía están pendientes de establecerse.
-
-Si el jugador no dispone de recursos suficientes, la máquina no permite realizar la compra.
-
-La mejora del blaster requiere que Jack haya obtenido previamente la pistola.
-
-### Administración de salud
-
-La salud determina la cantidad de daño que Jack puede recibir antes de morir.
-
-Actualmente, el personaje dispone de **80 puntos de salud máxima base** en la configuración de Unity.
-
-Cuando recibe daño, su salud disminuye según el ataque recibido. Si llega a cero, el personaje muere.
-
-Los botiquines permiten recuperar salud perdida, sin superar el máximo establecido.
-
-La cantidad definitiva que recupera cada botiquín permanece por definir. El proyecto actual dispone de un frasco de aceite que restaura 35 HP, pero este objeto deberá adaptarse al diseño definitivo del botiquín.
-
-### Inyección de adrenalina
-
-La inyección de adrenalina proporciona un aumento temporal de la velocidad de movimiento y capacidad de salto de Jack.
-
-Su efecto dura **5 segundos**, después de los cuales el personaje recupera sus estadísticas correspondientes.
-
-Los porcentajes exactos de aumento todavía están pendientes de definir.
-
-El efecto no representa una mejora permanente y debe desaparecer al finalizar su duración o cuando Jack muera.
-
-También queda pendiente determinar el comportamiento de una segunda inyección utilizada mientras la primera permanece activa.
-
-### Inyección de carbón activado
-
-La inyección de carbón activado incrementa temporalmente la salud máxima de Jack en un **20% respecto a su salud máxima base**.
-
-Con la configuración actual de 80 HP, el beneficio proporciona 16 puntos adicionales, permitiendo alcanzar un máximo temporal de 96 HP.
-
-El daño recibido consume primero la salud adicional. Cuando esta se agota, Jack vuelve a disponer únicamente de su salud máxima normal.
-
-Si el daño supera la cantidad de salud adicional restante, el excedente se descuenta de la salud normal.
-
-El beneficio también desaparece cuando Jack muere, por lo que reaparece sin el incremento temporal.
-
-Los botiquines no restauran automáticamente la reserva adicional ya consumida.
-
-### Administración de energía
-
-Jack dispone de una reserva de energía utilizada principalmente para ejecutar el ataque especial RayPunch.
-
-Esta energía puede acumularse mediante determinados ataques físicos contra enemigos.
-
-Cada ejecución del ataque especial consume una cantidad determinada de energía.
-
-Cuando la reserva disponible resulta insuficiente, el jugador no puede ejecutar la habilidad hasta recuperar la cantidad necesaria.
-
-La capacidad máxima y el costo exacto del ataque deberán verificarse antes de establecer sus valores definitivos en el GDD.
-
-### Administración de munición
-
-El blaster utiliza proyectiles para atacar enemigos y determinados objetos destructibles.
-
-El sistema actual de Unity contempla cargadores y recarga de munición.
-
-Cada disparo consume munición disponible, por lo que el jugador debe administrar su uso durante los enfrentamientos.
-
-La capacidad de los cargadores, la reserva máxima y las fuentes de obtención de munición todavía requieren confirmación para el diseño definitivo.
-
-La mejora Incremento ilegal de blaster duplica el daño de los disparos, pero no modifica automáticamente la capacidad de munición.
-
-### Pérdida de recursos y oportunidades
-
-Cuando Jack pierde toda su salud, se activa la secuencia de derrota.
-
-De acuerdo con el flujo de juego previsto, cada muerte consume una oportunidad.
-
-Si todavía dispone de oportunidades, el jugador puede reaparecer en el último checkpoint activado.
-
-Cuando las oportunidades se agotan, la partida entra en estado de Game Over y el jugador debe regresar al menú principal.
-
-El proyecto actual de Unity también contempla la pérdida temporal de tuercas, que pueden recuperarse al regresar al lugar donde murió el personaje.
-
-La integración definitiva de este comportamiento con los checkpoints y las oportunidades está pendiente de implementación.
-
-Las armas adquiridas y mejoras permanentes deberán conservarse al reaparecer, mientras que las bonificaciones temporales deben eliminarse según sus reglas.
-
-### Persistencia de recursos
-
-El sistema de guardado previsto debe conservar los recursos y elementos permanentes necesarios para continuar una partida.
-
-Esto comprende principalmente las tuercas, el armamento adquirido, las mejoras permanentes y los datos correspondientes a la progresión.
-
-También deben registrarse el nivel, checkpoint y oportunidades restantes.
-
-La persistencia exacta de los consumibles y munición todavía requiere definirse.
-
-El almacenamiento actual de Unity utiliza parcialmente datos serializados como JSON, pero todavía debe adaptarse al sistema completo de guardado y recuperación de partidas.
+**10. Límites y acumulación.** No existe intercambio de recursos entre jugadores. Las cantidades acumuladas se sujetan a los límites de cada recurso y a las reglas de inventario y munición.
 
 ## Balance
 
-### ¿Qué comportamiento queremos incentivar?
+**¿Qué comportamiento queremos incentivar?**
 
-La economía de Vaporlock busca incentivar la exploración, el combate estratégico y la administración responsable de los recursos.
+Se busca recompensar la exploración, el combate bien ejecutado y el uso inteligente de los recursos. Derrotar enemigos debe ofrecer una ventaja útil mediante las tuercas, mientras que administrar la salud, la energía y la munición favorece decisiones cuidadosas. Las dos mejoras deben representar elecciones significativas: una beneficia la movilidad y el combate físico; la otra fortalece el ataque a distancia. Los consumibles sirven como apoyo en momentos difíciles sin sustituir las habilidades del jugador.
 
-El jugador debe sentirse recompensado por derrotar enemigos, recolectar tuercas y aprovechar las oportunidades disponibles para fortalecer a Jack.
+La cantidad de tuercas que se obtiene durante los niveles y los costos de ambas mejoras deben permitir que el jugador comprenda sus posibilidades de compra sin necesitar sesiones largas de recolección, especialmente porque cada nivel presenta un recorrido breve.
 
-Las mejoras permiten adaptar su rendimiento a diferentes situaciones: la actualización de prótesis beneficia la movilidad y los ataques físicos, mientras que el incremento ilegal de blaster fortalece el combate a distancia.
+**¿Qué comportamiento queremos evitar?**
 
-Los consumibles proporcionan ventajas que pueden utilizarse durante enfrentamientos difíciles, incentivando al jugador a elegir los momentos más adecuados para aprovecharlos.
+No se pretende obligar al jugador a repetir enfrentamientos únicamente para reunir recursos, acumular grandes cantidades de objetos ni depender de una mejora específica para poder terminar el videojuego. También deben evitarse compras duplicadas, bonificaciones permanentes obtenidas por error, pérdida injustificada de recursos al reaparecer y situaciones en que el jugador se quede bloqueado por falta de munición o consumibles.
 
-También se busca que el jugador comprenda las consecuencias de sus decisiones, especialmente al administrar salud, energía y munición.
-
-### ¿Qué comportamiento queremos evitar?
-
-El sistema debe evitar que el jugador dependa excesivamente de la recolección de recursos para avanzar.
-
-Las mejoras deben resultar útiles, pero no convertirse en requisitos obligatorios para completar los niveles.
-
-Tampoco se busca fomentar la repetición innecesaria de enfrentamientos únicamente para acumular tuercas, especialmente considerando la duración relativamente corta de los escenarios.
-
-Los consumibles no deben eliminar completamente el desafío de los enemigos ni permitir acumular beneficios desproporcionados.
-
-Asimismo, deben evitarse situaciones en las que el jugador pierda recursos de manera injustificada, pueda adquirir mejoras repetidamente o quede bloqueado por falta de munición o consumibles.
-
-El balance definitivo de los recursos deberá ajustarse mediante pruebas de juego, considerando la cantidad de enemigos, la disponibilidad de objetos, los costos de las mejoras y la dificultad de cada nivel.
+El balance distribuye tuercas, consumibles y munición de modo que las mejoras sean alcanzables sin obligar a repetir enfrentamientos. La disponibilidad de recursos y la dificultad de los enemigos mantienen una progresión gradual.
 
 ---
 
